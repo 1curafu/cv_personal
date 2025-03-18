@@ -1,10 +1,8 @@
-/* Dark mode toggle functionality */
 const toggleButton = document.getElementById('dark-mode-toggle');
 toggleButton.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
 });
 
-/* Scroll reveal animations using Intersection Observer */
 const scrollElements = document.querySelectorAll('.js-scroll');
 
 const elementInView = (el, dividend = 1) => {
@@ -50,7 +48,6 @@ contactForm.addEventListener('submit', function(e) {
     return;
   }
 
-  // Simulate successful submission
   alert('Thank you for your message!');
   contactForm.reset();
 });
