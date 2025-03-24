@@ -1,0 +1,563 @@
+ * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1; /* Ensure content is above videos */
+}
+
+html {
+  --foreground: #333;
+  --primary-color-light: #007BFF;
+  --primary-color-dark: #FFB400;
+  --section-bg-light: rgba(255, 255, 255, 0.8);
+  --section-bg-dark: rgba(0, 0, 0, 0.85);
+  scroll-behavior: smooth;
+}
+
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  transition: opacity 0.8s ease;
+}
+
+/* By default, the dark video is hidden */
+#dark-video {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.darkmode #light-video {
+  opacity: 0;
+  pointer-events: none;
+}
+.darkmode #dark-video {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Body & Dark Mode Text */
+body {
+  font-family: Arial, sans-serif;
+  color: var(--foreground);
+  background-color: #f4f4f4; /* fallback if videos don't load */
+  line-height: 1.6;
+}
+.darkmode {
+  --foreground: #fff;
+  color: var(--foreground);
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-left ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+.nav-left ul li a {
+  text-decoration: none;
+  color: var(--foreground);
+  font-weight: bold;
+  transition: color 0.3s;
+}
+.nav-left ul li a:hover {
+  color: var(--primary-color-light);
+}
+.darkmode header {
+  background: rgba(34, 34, 34, 0.8);
+  border-bottom: 1px solid #333;
+}
+.darkmode .nav-left ul li a {
+  color: #fff;
+}
+.darkmode .nav-left ul li a:hover {
+  color: var(--primary-color-dark);
+}
+
+/* Nav Right (language dropdown + toggle) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Dark Mode Toggle (Sun/Moon) */
+.wave-toggle {
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+.wave-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.wave-toggle-label {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #eaeaea;
+  border-radius: 30px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s ease;
+  overflow: hidden;
+}
+
+.icon-sun,
+.icon-moon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);   /* center vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+}
+
+.icon-sun {
+  left: 7px;
+}
+.icon-moon {
+  right: 8px;
+}
+
+.icon-sun img,
+.icon-moon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* By default, hide the "dark" versions, show the "light" versions */
+.icon-sun-dark,
+.icon-moon-dark {
+  display: none;
+}
+
+.toggle-handle {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+/* When checked => dark mode background for the track */
+.wave-toggle input:checked + .wave-toggle-label {
+  background: #333;
+}
+
+/* Slide the handle to the right in dark mode */
+.wave-toggle input:checked + .wave-toggle-label .toggle-handle {
+  transform: translateX(30px);
+}
+
+/* Show the "dark" icons in dark mode, hide the "light" icons */
+.wave-toggle input:checked + .wave-toggle-label .icon-sun-light {
+  display: none;
+}
+.wave-toggle input:checked + .wave-toggle-label .icon-sun-dark {
+  display: block;
+}
+.wave-toggle input:checked + .wave-toggle-label .icon-moon-light {
+  display: none;
+}
+.wave-toggle input:checked + .wave-toggle-label .icon-moon-dark {
+  display: block;
+}
+
+/* Sections */
+section {
+  padding: 2rem;
+  margin: 1rem auto;
+  max-width: 1000px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  scroll-margin-top: 80px;
+  transition: background-color 0.3s;
+}
+.darkmode section {
+  background-color: var(--section-bg-dark);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* 8) Projects */
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+.project {
+  border: 1px solid #ddd;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  font-size: 1rem;
+}
+.darkmode .project {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+}
+.project h3 {
+  margin-bottom: 0.5rem;
+}
+.project p {
+  margin-bottom: 1rem;
+}
+.project-btn {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+  color: #fff;
+  background-color: var(--primary-color-light);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.project-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+}
+.darkmode .project-btn {
+  background-color: var(--primary-color-dark);
+}
+.darkmode .project-btn:hover {
+  box-shadow: 0 0 15px rgba(255, 180, 0, 0.5);
+}
+
+/* Avatar & Tagline */
+.avatar {
+  display: block;
+  margin: 1rem auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+}
+.tagline {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0.5rem 0 1rem;
+}
+
+/* Centered Vertical Timeline */
+.vertical-timeline {
+  position: relative;
+  margin: 2rem auto;
+  padding: 1rem 0;
+  width: 90%;
+}
+.vertical-timeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ccc;
+  z-index: 1; /* behind circles */
+}
+.vt-item {
+  position: relative;
+  margin: 2rem 0;
+  text-align: center;
+}
+.vt-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #444;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2; /* above line */
+  border: 2px solid #fff;
+}
+.vt-date {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: var(--primary-color-light);
+}
+.vt-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.darkmode .vt-content {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+/* Footer */
+footer {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #ddd;
+  margin-top: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+footer p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--foreground);
+}
+.darkmode footer {
+  background-color: rgba(34, 34, 34, 0.8);
+  border-top: 1px solid #333;
+}
+.darkmode footer p {
+  color: #fff;
+}
+
+/* Scroll Animations */
+.js-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.js-scroll.scrolled {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .nav-left ul {
+    flex-direction: column;
+  }
+  .vertical-timeline {
+    margin: 1rem auto;
+  }
+  .vt-item {
+    margin: 1rem 0;
+  }
+}
+
+.btn {
+  border-radius: 9999px !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 0.5rem 1.5rem !important;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+/* Primary or Secondary background color in normal mode */
+.btn-primary,
+.btn-secondary,
+.btn.btn-secondary.dropdown-toggle {
+  background-color: #3D8BFF !important;
+}
+
+/* Hover state in normal mode */
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn.btn-secondary.dropdown-toggle:hover {
+  background-color: #0056b3 !important;
+}
+
+/* Dark mode text color for buttons */
+.darkmode .btn {
+  color: #fff !important;
+}
+
+.darkmode .btn-primary,
+.darkmode .btn-secondary,
+.darkmode .btn.btn-secondary.dropdown-toggle {
+  background-color: var(--primary-color-dark) !important;
+}
+.darkmode .btn-primary:hover,
+.darkmode .btn-secondary:hover,
+.darkmode .btn.btn-secondary.dropdown-toggle:hover {
+  background-color: #e0a800 !important;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  background-color: #fff !important;
+  border: none !important;
+  border-radius: 12px !important; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+}
+.dropdown-item {
+  color: #333 !important;
+  transition: background-color 0.3s;
+  padding: 0.5rem 1.5rem !important;
+}
+.dropdown-item:hover {
+  background-color: #f0f0f0 !important;
+}
+
+/* Dark mode for dropdown */
+.darkmode .dropdown-menu {
+  background-color: #333 !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+}
+.darkmode .dropdown-item {
+  color: #fff !important;
+}
+.darkmode .dropdown-item:hover {
+  background-color: #444 !important;
+}
+
+/* Skills Radar Chart */
+.skills-radar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+.skills-radar-container svg {
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Rotating wrapper group */
+.wrap {
+  animation: rotation 30s infinite linear;
+  transform-origin: center center;
+  pointer-events: all;
+}
+.wrap:hover {
+  animation-play-state: paused;
+}
+.wrap:hover text {
+  animation-play-state: paused;
+}
+.wrap:hover .point-group {
+  opacity: 0.5;
+}
+
+/* The radar chart ring */
+.ring {
+  stroke: var(--foreground);
+  fill: transparent;
+  opacity: 0.5;
+  vector-effect: non-scaling-stroke;
+  animation: rotation 100s infinite linear reverse;
+  transform-origin: center center;
+}
+
+.point {
+  fill: var(--foreground);
+}
+
+.darkmode .point {
+  fill: #fff !important;
+}
+
+/* The radar chart outline */
+.outline {
+  fill: transparent;
+  stroke-width: 1px;
+  stroke: var(--foreground);
+  vector-effect: non-scaling-stroke;
+}
+
+/* Dark mode for the radar chart */
+.darkmode .outline {
+  stroke: #fff !important;
+}
+
+/* Each skill’s group */
+.point-group {
+  transition: transform 1s, opacity 1s;
+  transform-origin: center center;
+  transform-box: fill-box;
+  pointer-events: all;
+  position: relative;
+  transition-delay: 0.25s;
+}
+.point-group:hover {
+  transition: transform 0.5s, opacity 0.5s;
+  transform: scale(2);
+  transition-delay: 0s;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 1));
+  z-index: 1;
+  opacity: 1 !important;
+}
+
+/* Dark mode for the skill group */
+.point-wrapper {
+  animation-name: shake;
+  animation-duration: 5s;
+  transform-origin: 50% 50%;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+/* Skill text */
+text {
+  fill: var(--foreground);
+  font-size: 4px;
+  text-anchor: middle;
+  animation: rotation 30s reverse linear infinite; /* text spinning slowly */
+}
+
+/* Animations */
+@keyframes shake {
+  0%   { transform: translate(0.2%, 0.1%); }
+  10%  { transform: translate(-0.1%, -0.2%); }
+  20%  { transform: translate(-0.3%, 0.0%); }
+  30%  { transform: translate(0.0%, 0.2%); }
+  40%  { transform: translate(0.1%, -0.1%); }
+  50%  { transform: translate(-0.1%, 0.2%); }
+  60%  { transform: translate(-0.3%, 0.1%); }
+  70%  { transform: translate(0.2%, 0.1%); }
+  80%  { transform: translate(-0.1%, -0.1%); }
+  90%  { transform: translate(0.2%, 0.2%); }
+  100% { transform: translate(0.2%, 0.1%); }
+}
+
+@keyframes rotation {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
