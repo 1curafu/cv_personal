@@ -1,10 +1,12 @@
+// Dark Mode Toggle Code
 const waveToggleCheckbox = document.getElementById("wave-toggle-checkbox"); // Dark mode toggle checkbox
 
-const isDarkMode = localStorage.getItem("dark-mode") === "true"; // Check if dark mode is enabled
+// Check if dark mode is enabled (stored in localStorage)
+const isDarkMode = localStorage.getItem("dark-mode") === "true";
 document.documentElement.classList.toggle("darkmode", isDarkMode);
 waveToggleCheckbox.checked = isDarkMode;
 
-// Listen for changes to the checkbox
+// Listen for changes to the dark mode checkbox
 waveToggleCheckbox.addEventListener("change", () => {
   const checked = waveToggleCheckbox.checked;
   document.documentElement.classList.toggle("darkmode", checked);
@@ -12,7 +14,7 @@ waveToggleCheckbox.addEventListener("change", () => {
 });
 
 
-// Scroll animation
+// Scroll Animation Code
 const scrollElements = document.querySelectorAll(".js-scroll");
 
 const observer = new IntersectionObserver(
@@ -32,7 +34,7 @@ const observer = new IntersectionObserver(
 scrollElements.forEach((el) => observer.observe(el));
 
 
-// Language translation
+// Language Translation Code
 const translations = {
   en: {
     titleText: "Your Name - CV",
@@ -49,20 +51,18 @@ const translations = {
     projectsHeading: "Projects",
     timelineHeading: "Timeline",
     skillsHeading: "Skills",
-    projectFirstName : "Project One",
-    projectFirstDescription : "Description of project one.",
-    projectFirstBtn : "View Project",
-    projectSecondName : "Project Two",
-    projectSecondDescription : "Description of project two.",
-    projectSecondBtn : "View Project",
-    timelineFirstName : "Experience One",
-    timelineFirstDescription : "Description of experience one.",
-    timelineFirstDate : "Date of experience one.",
-    timelineSecondName : "Experience Two",
+    projectFirstName: "Project One",
+    projectFirstDescription: "Description of project one.",
+    projectFirstBtn: "View Project",
+    projectSecondName: "Project Two",
+    projectSecondDescription: "Description of project two.",
+    projectSecondBtn: "View Project",
+    timelineFirstName: "Experience One",
+    timelineFirstDescription: "Description of experience one.",
+    timelineFirstDate: "Date of experience one.",
+    timelineSecondName: "Experience Two",
     timelineSecondDescription: "Description of experience two.",
     timelineSecondDate: "Date of experience two."
-
-
   },
   de: {
     titleText: "Dein Name - Lebenslauf",
@@ -79,16 +79,16 @@ const translations = {
     projectsHeading: "Projekte",
     timelineHeading: "Zeitachse",
     skillsHeading: "Fähigkeiten",
-    projectFirstName : "Project One",
-    projectFirstDescription : "Description of project one.",
-    projectFirstBtn : "View Project",
-    projectSecondName : "Project Two",
-    projectSecondDescription : "Description of project two.",
-    projectSecondBtn : "View Project",
-    timelineFirstName : "Experience One",
-    timelineFirstDescription : "Description of experience one.",
-    timelineFirstDate : "Date of experience one.",
-    timelineSecondName : "Experience Two",
+    projectFirstName: "Project One",
+    projectFirstDescription: "Description of project one.",
+    projectFirstBtn: "View Project",
+    projectSecondName: "Project Two",
+    projectSecondDescription: "Description of project two.",
+    projectSecondBtn: "View Project",
+    timelineFirstName: "Experience One",
+    timelineFirstDescription: "Description of experience one.",
+    timelineFirstDate: "Date of experience one.",
+    timelineSecondName: "Experience Two",
     timelineSecondDescription: "Description of experience two.",
     timelineSecondDate: "Date of experience two."
   },
@@ -107,16 +107,16 @@ const translations = {
     projectsHeading: "Проекты",
     timelineHeading: "Хронология",
     skillsHeading: "Навыки",
-    projectFirstName : "Project One",
-    projectFirstDescription : "Description of project one.",
-    projectFirstBtn : "View Project",
-    projectSecondName : "Project Two",
-    projectSecondDescription : "Description of project two.",
-    projectSecondBtn : "View Project",
-    timelineFirstName : "Experience One",
-    timelineFirstDescription : "Description of experience one.",
-    timelineFirstDate : "Date of experience one.",
-    timelineSecondName : "Experience Two",
+    projectFirstName: "Project One",
+    projectFirstDescription: "Description of project one.",
+    projectFirstBtn: "View Project",
+    projectSecondName: "Project Two",
+    projectSecondDescription: "Description of project two.",
+    projectSecondBtn: "View Project",
+    timelineFirstName: "Experience One",
+    timelineFirstDescription: "Description of experience one.",
+    timelineFirstDate: "Date of experience one.",
+    timelineSecondName: "Experience Two",
     timelineSecondDescription: "Description of experience two.",
     timelineSecondDate: "Date of experience two."
   },
@@ -135,21 +135,20 @@ const translations = {
     projectsHeading: "Проєкти",
     timelineHeading: "Хронологія",
     skillsHeading: "Навички",
-    projectFirstName : "Project One",
-    projectFirstDescription : "Description of project one.",
-    projectFirstBtn : "View Project",
-    projectSecondName : "Project Two",
-    projectSecondDescription : "Description of project two.",
-    projectSecondBtn : "View Project",
-    timelineFirstName : "Experience One",
-    timelineFirZstDescription : "Description of experience one.",
-    timelineFirstDate : "Date of experience one.",
-    timelineSecondName : "Experience Two",
+    projectFirstName: "Project One",
+    projectFirstDescription: "Description of project one.",
+    projectFirstBtn: "View Project",
+    projectSecondName: "Project Two",
+    projectSecondDescription: "Description of project two.",
+    projectSecondBtn: "View Project",
+    timelineFirstName: "Experience One",
+    timelineFirZstDescription: "Description of experience one.",
+    timelineFirstDate: "Date of experience one.",
+    timelineSecondName: "Experience Two",
     timelineSecondDescription: "Description of experience two.",
     timelineSecondDate: "Date of experience two."
-  },
+  }
 };
-
 
 const elementsToTranslate = document.querySelectorAll("[data-key]");
 const titleElement = document.getElementById("title-text");
@@ -164,21 +163,22 @@ function applyTranslations(lang) {
   });
 }
 
-// Apply the default language
-const defaultLang = "en";
-applyTranslations(defaultLang);
-document.getElementById("languageDropdown").textContent = defaultLang.toUpperCase();
+// Load saved language from sessionStorage or default to "en"
+const savedLang = sessionStorage.getItem("language") || "en";
+applyTranslations(savedLang);
+document.getElementById("languageDropdown").textContent = savedLang.toUpperCase();
 
-// Listen for changes to the dropdown
+// Listen for changes to the language dropdown
 document.querySelectorAll(".dropdown-item").forEach((item) => {
   item.addEventListener("click", (e) => {
     e.preventDefault();
     const lang = item.getAttribute("data-lang");
-
-    // Update the dropdown text
+    
+    // Update the dropdown text and apply the translation
     document.getElementById("languageDropdown").textContent = lang.toUpperCase();
-
-    // Apply the translation
     applyTranslations(lang);
+    
+    // Save the selected language to sessionStorage
+    sessionStorage.setItem("language", lang);
   });
 });
