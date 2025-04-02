@@ -33,7 +33,7 @@ scrollElements.forEach((el) => observer.observe(el));
 
 
 // Language translation
-/*const translations = {
+const translations = {
   en: {
     titleText: "Your Name - CV",
     navHome: "Home",
@@ -49,6 +49,20 @@ scrollElements.forEach((el) => observer.observe(el));
     projectsHeading: "Projects",
     timelineHeading: "Timeline",
     skillsHeading: "Skills",
+    projectFirstName : "Project One",
+    projectFirstDescription : "Description of project one.",
+    projectFirstBtn : "View Project",
+    projectSecondName : "Project Two",
+    projectSecondDescription : "Description of project two.",
+    projectSecondBtn : "View Project",
+    timelineFirstName : "Experience One",
+    timelineFirstDescription : "Description of experience one.",
+    timelineFirstDate : "Date of experience one.",
+    timelineSecondName : "Experience Two",
+    timelineSecondDescription: "Description of experience two.",
+    timelineSecondDate: "Date of experience two."
+
+
   },
   de: {
     titleText: "Dein Name - Lebenslauf",
@@ -65,6 +79,18 @@ scrollElements.forEach((el) => observer.observe(el));
     projectsHeading: "Projekte",
     timelineHeading: "Zeitachse",
     skillsHeading: "Fähigkeiten",
+    projectFirstName : "Project One",
+    projectFirstDescription : "Description of project one.",
+    projectFirstBtn : "View Project",
+    projectSecondName : "Project Two",
+    projectSecondDescription : "Description of project two.",
+    projectSecondBtn : "View Project",
+    timelineFirstName : "Experience One",
+    timelineFirstDescription : "Description of experience one.",
+    timelineFirstDate : "Date of experience one.",
+    timelineSecondName : "Experience Two",
+    timelineSecondDescription: "Description of experience two.",
+    timelineSecondDate: "Date of experience two."
   },
   ru: {
     titleText: "Ваше имя - Резюме",
@@ -81,8 +107,20 @@ scrollElements.forEach((el) => observer.observe(el));
     projectsHeading: "Проекты",
     timelineHeading: "Хронология",
     skillsHeading: "Навыки",
+    projectFirstName : "Project One",
+    projectFirstDescription : "Description of project one.",
+    projectFirstBtn : "View Project",
+    projectSecondName : "Project Two",
+    projectSecondDescription : "Description of project two.",
+    projectSecondBtn : "View Project",
+    timelineFirstName : "Experience One",
+    timelineFirstDescription : "Description of experience one.",
+    timelineFirstDate : "Date of experience one.",
+    timelineSecondName : "Experience Two",
+    timelineSecondDescription: "Description of experience two.",
+    timelineSecondDate: "Date of experience two."
   },
-  uk: {
+  ua: {
     titleText: "Ваше Ім'я - Резюме",
     navHome: "Головна",
     navAbout: "Про мене",
@@ -97,9 +135,21 @@ scrollElements.forEach((el) => observer.observe(el));
     projectsHeading: "Проєкти",
     timelineHeading: "Хронологія",
     skillsHeading: "Навички",
+    projectFirstName : "Project One",
+    projectFirstDescription : "Description of project one.",
+    projectFirstBtn : "View Project",
+    projectSecondName : "Project Two",
+    projectSecondDescription : "Description of project two.",
+    projectSecondBtn : "View Project",
+    timelineFirstName : "Experience One",
+    timelineFirZstDescription : "Description of experience one.",
+    timelineFirstDate : "Date of experience one.",
+    timelineSecondName : "Experience Two",
+    timelineSecondDescription: "Description of experience two.",
+    timelineSecondDate: "Date of experience two."
   },
 };
-*/
+
 
 const elementsToTranslate = document.querySelectorAll("[data-key]");
 const titleElement = document.getElementById("title-text");
