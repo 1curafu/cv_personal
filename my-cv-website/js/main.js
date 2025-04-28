@@ -142,7 +142,7 @@ const translations = {
     projectSecondDescription: "Description of project two.",
     projectSecondBtn: "View Project",
     timelineFirstName: "Experience One",
-    timelineFirZstDescription: "Description of experience one.",
+    timelineFirstDescription: "Description of experience one.",
     timelineFirstDate: "Date of experience one.",
     timelineSecondName: "Experience Two",
     timelineSecondDescription: "Description of experience two.",
