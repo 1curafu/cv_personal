@@ -143,7 +143,7 @@ npm start
   
 [![Email](https://img.shields.io/badge/Email-icurafu333%40icloud.com-blue?style=for-the-badge&logo=mail.ru&logoColor=white)](mailto:icurafu333@icloud.com)
 [![GitHub](https://img.shields.io/badge/GitHub-1curafu-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/1curafu)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Mykhailo_Khimich-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]([https://linkedin.com/in/yourprofile](https://www.linkedin.com/in/mykhailo-khimich-a73a13265/))
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Mykhailo_Khimich-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/mykhailo-khimich-a73a13265/])
 
 </div>
 
