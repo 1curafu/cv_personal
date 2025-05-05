@@ -31,7 +31,6 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-// ——— App & CORS ———
 const app = express();
 // Allow CORS for all origins
 app.use(cors());
@@ -44,7 +43,7 @@ const rootDir = path.join(__dirname, "..");
 // Serve all static files from the rootDir
 app.use(express.static(rootDir));
 
-// ——— Middleware ———
+// Define a route to serve the index.html file
 app.get("/", (req, res) => {
   res.sendFile(path.join(rootDir, "index.html"));
 });

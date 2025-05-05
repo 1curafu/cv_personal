@@ -24,6 +24,7 @@ html {
   object-fit: cover;
   z-index: -1;
   transition: opacity 0.8s ease;
+  height: calc(var(--vh) * 100);
 }
 
 /* By default, the dark video is hidden */
@@ -43,10 +44,11 @@ html {
 
 /* Body & Dark Mode Text */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Inter"Arial, sans-serif;
   color: var(--foreground);
   background-color: #f4f4f4; /* fallback if videos don't load */
   line-height: 1.6;
+  animation: fadeIn 0.5s ease-in;
 }
 .darkmode {
   --foreground: #fff;
@@ -350,8 +352,9 @@ footer p {
 /* Scroll Animations */
 .js-scroll {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.5, 0, 0.3, 1), 
+              transform 0.8s cubic-bezier(0.5, 0, 0.3, 1);
 }
 .js-scroll.scrolled {
   opacity: 1;
@@ -383,6 +386,7 @@ footer p {
   padding: 0.5rem 1.5rem !important;
   font-weight: 500;
   box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* Primary or Secondary background color in normal mode */
@@ -560,4 +564,375 @@ text {
 @keyframes rotation {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+
+/* Enhanced Mobile & Responsive Design */
+@media (max-width: 992px) {
+  section {
+    padding: 1.5rem;
+    margin: 0.75rem auto;
+  }
+  
+  .project-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Improved header for mobile */
+  header {
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .nav-left ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .nav-left ul li a {
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem !important;
+  }
+  
+  /* Improved Project Cards */
+  .project {
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Timeline improvements */
+  .vertical-timeline::before {
+    left: 30px;
+  }
+  
+  .vt-item {
+    text-align: left;
+    padding-left: 50px;
+  }
+  
+  .vt-circle {
+    position: absolute;
+    left: 18px;
+    top: 15px;
+    margin: 0;
+  }
+  
+  .vt-date {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Skills Chart size adjustment */
+  .skills-radar-container {
+    margin: 1rem auto;
+  }
+  
+  /* Footer adjustments */
+  footer {
+    padding: 1rem 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  footer p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Extreme mobile adjustments */
+  body {
+    font-size: 0.95rem;
+  }
+  
+  section {
+    padding: 1.2rem;
+    margin: 0.5rem auto;
+    border-radius: 15px;
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .tagline {
+    font-size: 1rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .nav-right {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  
+  /* Make buttons full width on small screens */
+  .project-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Modern Loading Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+  .project-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .point-group:hover {
+    transform: scale(1.5);
+  }
+  
+  /* More visible active states for touch */
+  .btn:active,
+  .project-btn:active {
+    background-color: #0056b3 !important;
+    transform: scale(0.97);
+  }
+  
+  .darkmode .btn:active,
+  .darkmode .project-btn:active {
+    background-color: #e0a800 !important;
+  }
+}
+
+/* Added Font Support */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ck-8.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+/* Better Focus States for Accessibility */
+a:focus,
+button:focus,
+input:focus {
+  outline: 2px solid var(--primary-color-light);
+  outline-offset: 2px;
+}
+
+.darkmode a:focus,
+.darkmode button:focus,
+.darkmode input:focus {
+  outline-color: var(--primary-color-dark);
+}
+
+/* Smoother Dark Mode Transition */
+body,
+header,
+section,
+footer,
+.btn,
+.project,
+.vt-content,
+.dropdown-menu,
+.wave-toggle-label {
+  transition: background-color 0.5s ease-out, 
+              color 0.5s ease-out, 
+              border-color 0.5s ease-out,
+              box-shadow 0.5s ease-out;
+}
+
+/* Optimized Print Styles */
+@media print {
+  .bg-video,
+  .wave-toggle,
+  .dropdown,
+  .nav-btn,
+  .project-btn {
+    display: none !important;
+  }
+  
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  section,
+  .project,
+  .vt-content {
+    box-shadow: none !important;
+    background: white !important;
+    color: black !important;
+    break-inside: avoid;
+  }
+  
+  .vertical-timeline::before {
+    background-color: #000 !important;
+  }
+  
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
+  }
+  
+  footer {
+    background: white !important;
+    color: black !important;
+    border-top: 1px solid #000 !important;
+  }
+}
+
+/* Improved GPU Acceleration for Animations */
+.js-scroll,
+.project-btn,
+.wave-toggle-label .toggle-handle,
+.point-group {
+  will-change: transform, opacity;
+
+}
+
+/* Enhanced Skills Radar for Mobile */
+@media (max-width: 576px) {
+  .skills-radar-container {
+    max-width: 280px;
+  }
+  
+  text {
+    font-size: 3.2px;
+  }
+  
+  .point-group:hover {
+    transform: scale(1.8);
+  }
+}
+
+/* Better Mobile Navigation */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+  }
+  
+  .nav-left {
+    width: 100%;
+    margin-bottom: 0.8rem;
+  }
+  
+  .nav-left ul {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .nav-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Dynamic Viewport Height Fix (for mobile browsers) */
+:root {
+  --vh: 1vh;
+}
+
+/* System Dark Mode Detection */
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode-force) body {
+    --foreground: #fff;
+    color: var(--foreground);
+  }
+  
+  html:not(.light-mode-force) #light-video {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  html:not(.light-mode-force) #dark-video {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  html:not(.light-mode-force) header {
+    background: rgba(34, 34, 34, 0.8);
+    border-bottom: 1px solid #333;
+  }
+  
+  html:not(.light-mode-force) section {
+    background-color: var(--section-bg-dark);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Concentration Bar Styles */
+.concentration-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 1rem auto;
+}
+
+.concentration-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--foreground);
+}
+
+.concentration-bar {
+  height: 25px;
+  background-color: #e9ecef;
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.concentration-level {
+  height: 100%;
+  width: 45%; /* Default value - can be controlled via JavaScript */
+  background: linear-gradient(to right, var(--primary-color-light), #004e9c);
+  border-radius: 25px;
+  transition: width 1.5s ease-in-out;
+  animation: pulse 2s infinite;
+  background-color: #3B82F6; /* Blue color as in your screenshot */
+
+}
+
+/* Dark mode styles */
+.darkmode .concentration-bar {
+  background-color: #444;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.darkmode .concentration-level {
+  background: linear-gradient(to right, var(--primary-color-dark), #b37e00);
+  background-color: var(--primary-color-dark);
+}
+
+/* Animation for the concentration bar */
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* Concentration bar section */
+.concentration-section {
+  width: 100%;
+  max-width: 800px;
+  margin: 1.5rem auto;
+  text-align: center;
 }
