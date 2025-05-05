@@ -190,10 +190,131 @@ const observer  = new IntersectionObserver(
 );
 scrollEls.forEach(el => observer.observe(el));
 
+
+function setVH() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Run on page load and resize
+setVH();
+window.addEventListener('resize', setVH);
+
+// Better scroll reveal with intersection observer
+document.addEventListener('DOMContentLoaded', function() {
+  const scrollElements = document.querySelectorAll('.js-scroll');
+  
+  const elementInView = (el, percentageScroll = 100) => {
+    const elementTop = el.getBoundingClientRect().top;
+    const elementHeight = el.getBoundingClientRect().height;
+    
+    return (
+      elementTop <= 
+      ((window.innerHeight || document.documentElement.clientHeight) * (percentageScroll/100))
+    );
+  };
+  
+  const displayScrollElement = (element) => {
+    element.classList.add('scrolled');
+  };
+  
+  const hideScrollElement = (element) => {
+    element.classList.remove('scrolled');
+  };
+  
+  const handleScrollAnimation = () => {
+    scrollElements.forEach((el) => {
+      if (elementInView(el, 90)) {
+        displayScrollElement(el);
+      } else {
+        hideScrollElement(el);
+      }
+    });
+  };
+  
+  // Initialize
+  handleScrollAnimation();
+  
+  // Throttle function for better performance
+  let throttleTimer;
+  const throttle = (callback, time) => {
+    if (throttleTimer) return;
+    throttleTimer = true;
+    setTimeout(() => {
+      callback();
+      throttleTimer = false;
+    }, time);
+  };
+  
+  // Add scroll event listener
+  window.addEventListener('scroll', () => {
+    throttle(handleScrollAnimation, 250);
+  });
+  
+  // System dark mode detection
+  const darkModeToggle = document.getElementById('wave-toggle-checkbox');
+  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+  
+  // Apply system preference on page load if toggle isn't explicitly set
+  if (localStorage.getItem('darkMode') === null && prefersDarkMode.matches) {
+    document.body.classList.add('darkmode');
+    darkModeToggle.checked = true;
+  }
+  
+  // Listen for system changes
+  prefersDarkMode.addEventListener('change', (e) => {
+    // Only apply if user hasn't manually set preference
+    if (localStorage.getItem('darkMode') === null) {
+      if (e.matches) {
+        document.body.classList.add('darkmode');
+        darkModeToggle.checked = true;
+      } else {
+        document.body.classList.remove('darkmode');
+        darkModeToggle.checked = false;
+      }
+    }
+  });
+});
+
+// Add touch detection
+document.documentElement.classList.add(('ontouchstart' in window) ? 'touch-device' : 'no-touch');
+
 // Notify when offline/online
 window.addEventListener("offline", () => {
   console.warn("Offline – using local translations.");
 });
 window.addEventListener("online", () => {
   console.info("Back online – will fetch translations from your API.");
+});
+
+// Add this to your main.js file
+
+// Function to handle the concentration bar
+function setupConcentrationBar() {
+  const concentrationLevel = document.getElementById('concentration-level');
+  if (!concentrationLevel) return;
+  
+  // Set initial concentration level (75%)
+  concentrationLevel.style.width = '75%';
+  
+  // Optional: Make the concentration bar interactive
+  // This will change the level based on scroll position
+  window.addEventListener('scroll', () => {
+    // Calculate how far down the page the user has scrolled (as a percentage)
+    const scrollPosition = window.scrollY;
+    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercentage = (scrollPosition / documentHeight) * 100;
+    
+    // Map scroll percentage to a reasonable concentration range (between 40% and 90%)
+    const concentrationValue = 40 + (scrollPercentage / 100) * 50;
+    
+    // Update the concentration level
+    concentrationLevel.style.width = `${concentrationValue}%`;
+  });
+}
+
+// Call the function when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  setupConcentrationBar();
+  // ...other existing initialization code
 });

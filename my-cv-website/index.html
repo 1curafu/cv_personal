@@ -18,9 +18,13 @@
 <body>
   <video autoplay muted loop id="light-video" class="bg-video" description="Light Background">
     <source src="assets/light.mp4" type="video/mp4">
+    <track src="assets/light-subtitles.vtt" kind="subtitles" srclang="en" label="English">
+    <track src="assets/light-description.vtt" kind="descriptions" srclang="en" label="English Description">
   </video>
   <video autoplay muted loop id="dark-video" class="bg-video" description="Dark Background">
     <source src="assets/dark.mp4" type="video/mp4">
+    <track src="assets/dark-subtitles.vtt" kind="subtitles" srclang="en" label="English">
+    <track src="assets/dark-description.vtt" kind="descriptions" srclang="en" label="English Description">
   </video>
 
   <header>
@@ -78,11 +82,26 @@
 
   <main>
     <section id="home" class="js-scroll">
-      <!--<h1 id="home-heading" data-key="homeHeading">Welcome to My CV Website</h1> -->
       <img src="assets/avatar.png" alt="Your Avatar" class="avatar">
       <p class="tagline" id="home-tagline" data-key="homeTagline">
         I am Mykhailo Khimich – the worst developer and not a creative thinker.
       </p>
+      
+      <div class="concentration-section">
+        <p class="tagline" id="concentration-title">My concentration</p>
+        
+        <div class="concentration-container">
+          <div class="concentration-labels">
+            <span>Low</span>
+            <span>Medium</span>
+            <span>High</span>
+          </div>
+          <div class="concentration-bar">
+            <div class="concentration-level" id="concentration-level"></div>
+          </div>
+        </div>
+      </div>
+      
       <p id="home-intro" data-key="homeIntro">lol.</p>
     </section>
 
