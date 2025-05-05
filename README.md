@@ -53,6 +53,7 @@ my-cv-website/
 │   └── server.js           Express server + Firebase integration
 ├── 📄  index.html           Main HTML structure
 └── 🔒  .env                 Environment variables (not in repo)
+```
 
 ## 🚀 Getting Started
 
