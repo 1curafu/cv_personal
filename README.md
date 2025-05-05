@@ -39,8 +39,6 @@ A responsive, modern CV website with dark/light mode transition and multi-langua
 ## 📁 Project Structure
 
 <div align="center">
-  
-```
 my-cv-website/
 ┣━━ 🖼️ assets/               # Icons, images, and video backgrounds
 ┃   ┣━━ 🎬 light.mp4         # Light mode background video
@@ -55,8 +53,6 @@ my-cv-website/
 ┃   ┗━━ server.js           # Express server setup with Firebase integration
 ┣━━ 📄 index.html            # Main HTML structure
 ┗━━ 🔒 .env                  # Environment variables (not included in repository)
-```
-
 </div>
 
 ## 🚀 Getting Started
