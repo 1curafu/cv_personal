@@ -1,40 +1,4 @@
-// Dark Mode Toggle Code
-const waveToggleCheckbox = document.getElementById("wave-toggle-checkbox"); // Dark mode toggle checkbox
-
-// Check if dark mode is enabled (stored in localStorage)
-const isDarkMode = localStorage.getItem("dark-mode") === "true";
-document.documentElement.classList.toggle("darkmode", isDarkMode);
-waveToggleCheckbox.checked = isDarkMode;
-
-// Listen for changes to the dark mode checkbox
-waveToggleCheckbox.addEventListener("change", () => {
-  const checked = waveToggleCheckbox.checked;
-  document.documentElement.classList.toggle("darkmode", checked);
-  localStorage.setItem("dark-mode", checked);
-});
-
-
-// Scroll Animation Code
-const scrollElements = document.querySelectorAll(".js-scroll");
-
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("scrolled");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  {
-    threshold: 0.2,
-  }
-);
-
-scrollElements.forEach((el) => observer.observe(el));
-
-
-// Language Translation Code
+// Local translations for fallback
 const translations = {
   en: {
     titleText: "Your Name - CV",
@@ -150,35 +114,86 @@ const translations = {
   }
 };
 
+// Remote fetch translations
+async function fetchRemoteTranslations(lang) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/translations/${lang}`);
+    if (!res.ok) {
+      throw new Error("no remote");
+    }
+    return await res.json();
+  } catch (e) {
+    console.warn("Falling back to local translations:", e);
+    return translations[lang] || translations["en"];
+  }
+}
+
+// Apply translations to the page
+// Select all elements with data-key attribute
 const elementsToTranslate = document.querySelectorAll("[data-key]");
-const titleElement = document.getElementById("title-text");
+const titleElement        = document.getElementById("title-text");
 
-function applyTranslations(lang) {
-  titleElement.textContent =
-    translations[lang].titleText || translations["en"].titleText;
+async function applyTranslations(lang) {
+  const dict = await fetchRemoteTranslations(lang);
 
-  elementsToTranslate.forEach((el) => {
-    const key = el.getAttribute("data-key");
-    el.textContent = translations[lang][key] || translations["en"][key];
+  // Title
+  titleElement.textContent = dict.titleText;
+
+  // All others
+  elementsToTranslate.forEach(el => {
+    const key = el.dataset.key;
+    el.textContent = dict[key] || translations["en"][key] || "";
   });
 }
 
-// Load saved language from sessionStorage or default to "en"
-const savedLang = sessionStorage.getItem("language") || "en";
-applyTranslations(savedLang);
-document.getElementById("languageDropdown").textContent = savedLang.toUpperCase();
+// Language dropdown
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = sessionStorage.getItem("language") || "en";
+  applyTranslations(savedLang);
+  document.getElementById("languageDropdown").textContent = savedLang.toUpperCase();
 
-// Listen for changes to the language dropdown
-document.querySelectorAll(".dropdown-item").forEach((item) => {
-  item.addEventListener("click", (e) => {
-    e.preventDefault();
-    const lang = item.getAttribute("data-lang");
-    
-    // Update the dropdown text and apply the translation
-    document.getElementById("languageDropdown").textContent = lang.toUpperCase();
-    applyTranslations(lang);
-    
-    // Save the selected language to sessionStorage
-    sessionStorage.setItem("language", lang);
+  document.querySelectorAll(".dropdown-item").forEach(item => {
+    item.addEventListener("click", async e => {
+      e.preventDefault();
+      const lang = item.dataset.lang;
+      sessionStorage.setItem("language", lang);
+      document.getElementById("languageDropdown").textContent = lang.toUpperCase();
+      await applyTranslations(lang);
+    });
   });
+});
+
+// Dark mode toggle
+const waveToggle = document.getElementById("wave-toggle-checkbox");
+const isDarkMode = localStorage.getItem("dark-mode") === "true";
+document.documentElement.classList.toggle("darkmode", isDarkMode);
+waveToggle.checked = isDarkMode;
+
+waveToggle.addEventListener("change", () => {
+  const on = waveToggle.checked;
+  document.documentElement.classList.toggle("darkmode", on);
+  localStorage.setItem("dark-mode", on);
+});
+
+// Scroll animations
+const scrollEls = document.querySelectorAll(".js-scroll");
+const observer  = new IntersectionObserver(
+  entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add("scrolled");
+        observer.unobserve(en.target);
+      }
+    });
+  },
+  { threshold: 0.2 }
+);
+scrollEls.forEach(el => observer.observe(el));
+
+// Notify when offline/online
+window.addEventListener("offline", () => {
+  console.warn("Offline – using local translations.");
+});
+window.addEventListener("online", () => {
+  console.info("Back online – will fetch translations from your API.");
 });
