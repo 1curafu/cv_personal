@@ -76,7 +76,6 @@ spdy
 const HTTP_PORT = 8080;
 http
   .createServer((req, res) => {
-    // preserve path + query, redirect to HTTPS
     const host = req.headers.host?.split(":")[0] || "localhost";
     const location = `https://${host}:${HTTPS_PORT}${req.url}`;
     res.writeHead(301, { Location: location });
