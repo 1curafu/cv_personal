@@ -11,7 +11,6 @@ import dotenv from "dotenv";
 
 dotenv.config();  // loads FIREBASE_* vars
 
-// —– Firebase Service Account Setup —–
 const serviceAccount = {
   type:                        process.env.FIREBASE_TYPE,
   project_id:                  process.env.FIREBASE_PROJECT_ID,
@@ -30,19 +29,15 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-// —– Express App Setup —–
 const app = express();
 app.use(cors());
 
-// compute __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-// serve static files from project root
 const rootDir = path.join(__dirname, "..");
 app.use(express.static(rootDir));
 
-// Index route
 app.get("/", (req, res) => {
   res.sendFile(path.join(rootDir, "index.html"));
 });
@@ -61,7 +56,6 @@ app.get("/api/translations/:lang", async (req, res) => {
   }
 });
 
-// —– HTTPS / HTTP2 via SPDY —–
 const httpsOpts = {
   key:  fs.readFileSync(path.join(__dirname, "certs/privkey.pem")),
   cert: fs.readFileSync(path.join(__dirname, "certs/fullchain.pem")),
@@ -79,7 +73,6 @@ spdy
     console.log(`🚀 HTTP/2 + HTTPS server running at https://localhost:${HTTPS_PORT}`);
   });
 
-// —– Plain HTTP → HTTPS Redirect —–
 const HTTP_PORT = 8080;
 http
   .createServer((req, res) => {
