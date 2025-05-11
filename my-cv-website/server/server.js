@@ -9,7 +9,7 @@ import admin from "firebase-admin";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 
-dotenv.config();  // loads FIREBASE_* vars
+dotenv.config();
 
 const serviceAccount = {
   type:                        process.env.FIREBASE_TYPE,
