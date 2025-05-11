@@ -276,7 +276,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Add touch detection
 document.documentElement.classList.add(('ontouchstart' in window) ? 'touch-device' : 'no-touch');
 
 // Notify when offline/online
@@ -287,34 +286,7 @@ window.addEventListener("online", () => {
   console.info("Back online – will fetch translations from your API.");
 });
 
-// Add this to your main.js file
 
-// Function to handle the concentration bar
-function setupConcentrationBar() {
-  const concentrationLevel = document.getElementById('concentration-level');
-  if (!concentrationLevel) return;
-  
-  // Set initial concentration level (75%)
-  concentrationLevel.style.width = '75%';
-  
-  // Optional: Make the concentration bar interactive
-  // This will change the level based on scroll position
-  window.addEventListener('scroll', () => {
-    // Calculate how far down the page the user has scrolled (as a percentage)
-    const scrollPosition = window.scrollY;
-    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercentage = (scrollPosition / documentHeight) * 100;
-    
-    // Map scroll percentage to a reasonable concentration range (between 40% and 90%)
-    const concentrationValue = 40 + (scrollPercentage / 100) * 50;
-    
-    // Update the concentration level
-    concentrationLevel.style.width = `${concentrationValue}%`;
-  });
-}
-
-// Call the function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
   setupConcentrationBar();
-  // ...other existing initialization code
 });
