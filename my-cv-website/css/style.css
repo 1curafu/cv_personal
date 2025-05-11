@@ -3,7 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   position: relative;
-  z-index: 1; /* Ensure content is above videos */
+  z-index: 1;
 }
 
 html {
@@ -27,7 +27,6 @@ html {
   height: calc(var(--vh) * 100);
 }
 
-/* By default, the dark video is hidden */
 #dark-video {
   opacity: 0;
   pointer-events: none;
@@ -42,11 +41,10 @@ html {
   pointer-events: auto;
 }
 
-/* Body & Dark Mode Text */
 body {
-  font-family: "Inter"Arial, sans-serif;
+  font-family: Arial, sans-serif;
   color: var(--foreground);
-  background-color: #f4f4f4; /* fallback if videos don't load */
+  background-color: #f4f4f4;
   line-height: 1.6;
   animation: fadeIn 0.5s ease-in;
 }
@@ -96,14 +94,12 @@ nav {
   color: var(--primary-color-dark);
 }
 
-/* Nav Right (language dropdown + toggle) */
 .nav-right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Dark Mode Toggle (Sun/Moon) */
 .wave-toggle {
   position: relative;
   width: 60px;
@@ -133,7 +129,7 @@ nav {
 .icon-moon {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);   /* center vertically */
+  transform: translateY(-50%); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,7 +152,6 @@ nav {
   object-fit: contain;
 }
 
-/* By default, hide the "dark" versions, show the "light" versions */
 .icon-sun-dark,
 .icon-moon-dark {
   display: none;
@@ -174,17 +169,14 @@ nav {
   transition: transform 0.3s ease;
 }
 
-/* When checked => dark mode background for the track */
 .wave-toggle input:checked + .wave-toggle-label {
   background: #333;
 }
 
-/* Slide the handle to the right in dark mode */
 .wave-toggle input:checked + .wave-toggle-label .toggle-handle {
   transform: translateX(30px);
 }
 
-/* Show the "dark" icons in dark mode, hide the "light" icons */
 .wave-toggle input:checked + .wave-toggle-label .icon-sun-light {
   display: none;
 }
@@ -198,7 +190,6 @@ nav {
   display: block;
 }
 
-/* Sections */
 section {
   padding: 2rem;
   margin: 1rem auto;
@@ -215,7 +206,6 @@ section {
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* 8) Projects */
 .project-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -261,13 +251,13 @@ section {
   box-shadow: 0 0 15px rgba(255, 180, 0, 0.5);
 }
 
-/* Avatar & Tagline */
 .avatar {
   display: block;
   margin: 1rem auto;
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  object-fit: cover;
   border: 3px solid #ccc;
 }
 .tagline {
@@ -276,7 +266,6 @@ section {
   margin: 0.5rem 0 1rem;
 }
 
-/* Centered Vertical Timeline */
 .vertical-timeline {
   position: relative;
   margin: 2rem auto;
@@ -291,7 +280,7 @@ section {
   bottom: 0;
   width: 2px;
   background-color: #ccc;
-  z-index: 1; /* behind circles */
+  z-index: 1;
 }
 .vt-item {
   position: relative;
@@ -305,7 +294,7 @@ section {
   background-color: #444;
   margin: 0 auto;
   position: relative;
-  z-index: 2; /* above line */
+  z-index: 2;
   border: 2px solid #fff;
 }
 .vt-date {
@@ -325,7 +314,6 @@ section {
   color: #fff;
 }
 
-/* Footer */
 footer {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 1rem;
@@ -349,7 +337,6 @@ footer p {
   color: #fff;
 }
 
-/* Scroll Animations */
 .js-scroll {
   opacity: 0;
   transform: translateY(30px);
@@ -361,7 +348,6 @@ footer p {
   transform: translateY(0);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   header nav {
     flex-direction: column;
@@ -389,21 +375,20 @@ footer p {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Primary or Secondary background color in normal mode */
 .btn-primary,
 .btn-secondary,
 .btn.btn-secondary.dropdown-toggle {
-  background-color: #3D8BFF !important;
+  background-color: #0066cc !important;
+  border-color:    #0066cc !important;
 }
 
-/* Hover state in normal mode */
 .btn-primary:hover,
 .btn-secondary:hover,
 .btn.btn-secondary.dropdown-toggle:hover {
   background-color: #0056b3 !important;
+  border-color:    #0056b3 !important;
 }
 
-/* Dark mode text color for buttons */
 .darkmode .btn {
   color: #fff !important;
 }
@@ -417,9 +402,9 @@ footer p {
 .darkmode .btn-secondary:hover,
 .darkmode .btn.btn-secondary.dropdown-toggle:hover {
   background-color: #e0a800 !important;
+  color: #2a2a2a !important;
 }
 
-/* Dropdown menu */
 .dropdown-menu {
   background-color: #fff !important;
   border: none !important;
@@ -435,7 +420,6 @@ footer p {
   background-color: #f0f0f0 !important;
 }
 
-/* Dark mode for dropdown */
 .darkmode .dropdown-menu {
   background-color: #333 !important;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
@@ -447,7 +431,6 @@ footer p {
   background-color: #444 !important;
 }
 
-/* Skills Radar Chart */
 .skills-radar-container {
   display: flex;
   justify-content: center;
@@ -464,7 +447,6 @@ footer p {
   vector-effect: non-scaling-stroke;
 }
 
-/* Rotating wrapper group */
 .wrap {
   animation: rotation 30s infinite linear;
   transform-origin: center center;
@@ -480,7 +462,6 @@ footer p {
   opacity: 0.5;
 }
 
-/* The radar chart ring */
 .ring {
   stroke: var(--foreground);
   fill: transparent;
@@ -498,7 +479,6 @@ footer p {
   fill: #fff !important;
 }
 
-/* The radar chart outline */
 .outline {
   fill: transparent;
   stroke-width: 1px;
@@ -506,12 +486,10 @@ footer p {
   vector-effect: non-scaling-stroke;
 }
 
-/* Dark mode for the radar chart */
 .darkmode .outline {
   stroke: #fff !important;
 }
 
-/* Each skill’s group */
 .point-group {
   transition: transform 1s, opacity 1s;
   transform-origin: center center;
@@ -529,7 +507,6 @@ footer p {
   opacity: 1 !important;
 }
 
-/* Dark mode for the skill group */
 .point-wrapper {
   animation-name: shake;
   animation-duration: 5s;
@@ -538,15 +515,13 @@ footer p {
   animation-timing-function: ease-in-out;
 }
 
-/* Skill text */
 text {
   fill: var(--foreground);
   font-size: 4px;
   text-anchor: middle;
-  animation: rotation 30s reverse linear infinite; /* text spinning slowly */
+  animation: rotation 30s reverse linear infinite;
 }
 
-/* Animations */
 @keyframes shake {
   0%   { transform: translate(0.2%, 0.1%); }
   10%  { transform: translate(-0.1%, -0.2%); }
@@ -566,9 +541,6 @@ text {
   100% { transform: rotate(360deg); }
 }
 
-
-
-/* Enhanced Mobile & Responsive Design */
 @media (max-width: 992px) {
   section {
     padding: 1.5rem;
@@ -581,7 +553,6 @@ text {
 }
 
 @media (max-width: 768px) {
-  /* Improved header for mobile */
   header {
     padding: 0.8rem;
     margin-bottom: 0.8rem;
@@ -598,13 +569,11 @@ text {
     padding: 0.4rem 1rem !important;
   }
   
-  /* Improved Project Cards */
   .project {
     padding: 1.2rem;
     margin-bottom: 1rem;
   }
   
-  /* Timeline improvements */
   .vertical-timeline::before {
     left: 30px;
   }
@@ -625,12 +594,10 @@ text {
     margin-bottom: 0.5rem;
   }
   
-  /* Skills Chart size adjustment */
   .skills-radar-container {
     margin: 1rem auto;
   }
   
-  /* Footer adjustments */
   footer {
     padding: 1rem 0.5rem;
     margin-top: 1rem;
@@ -642,7 +609,6 @@ text {
 }
 
 @media (max-width: 576px) {
-  /* Extreme mobile adjustments */
   body {
     font-size: 0.95rem;
   }
@@ -673,7 +639,6 @@ text {
     margin-top: 0.5rem;
   }
   
-  /* Make buttons full width on small screens */
   .project-btn {
     display: block;
     width: 100%;
@@ -681,7 +646,6 @@ text {
   }
 }
 
-/* Modern Loading Animation */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -692,7 +656,6 @@ text {
   transform: scale(0.96);
 }
 
-/* Touch Device Optimizations */
 @media (hover: none) {
   .project-btn:hover {
     transform: none;
@@ -703,7 +666,6 @@ text {
     transform: scale(1.5);
   }
   
-  /* More visible active states for touch */
   .btn:active,
   .project-btn:active {
     background-color: #0056b3 !important;
@@ -716,7 +678,6 @@ text {
   }
 }
 
-/* Added Font Support */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -726,8 +687,6 @@ text {
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-
-/* Better Focus States for Accessibility */
 a:focus,
 button:focus,
 input:focus {
@@ -741,7 +700,6 @@ input:focus {
   outline-color: var(--primary-color-dark);
 }
 
-/* Smoother Dark Mode Transition */
 body,
 header,
 section,
@@ -751,13 +709,11 @@ footer,
 .vt-content,
 .dropdown-menu,
 .wave-toggle-label {
-  transition: background-color 0.5s ease-out, 
-              color 0.5s ease-out, 
-              border-color 0.5s ease-out,
-              box-shadow 0.5s ease-out;
+  transition: background-color 0.5s ease-out, color 0.5s ease-out, 
+  border-color 0.5s ease-out,
+  box-shadow 0.5s ease-out;
 }
 
-/* Optimized Print Styles */
 @media print {
   .bg-video,
   .wave-toggle,
@@ -797,7 +753,6 @@ footer,
   }
 }
 
-/* Improved GPU Acceleration for Animations */
 .js-scroll,
 .project-btn,
 .wave-toggle-label .toggle-handle,
@@ -806,7 +761,6 @@ footer,
 
 }
 
-/* Enhanced Skills Radar for Mobile */
 @media (max-width: 576px) {
   .skills-radar-container {
     max-width: 280px;
@@ -821,7 +775,6 @@ footer,
   }
 }
 
-/* Better Mobile Navigation */
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
@@ -843,12 +796,10 @@ footer,
   }
 }
 
-/* Dynamic Viewport Height Fix (for mobile browsers) */
 :root {
   --vh: 1vh;
 }
 
-/* System Dark Mode Detection */
 @media (prefers-color-scheme: dark) {
   html:not(.light-mode-force) body {
     --foreground: #fff;

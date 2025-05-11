@@ -117,7 +117,7 @@ const translations = {
 // Remote fetch translations
 async function fetchRemoteTranslations(lang) {
   try {
-    const res = await fetch(`http://localhost:3000/api/translations/${lang}`);
+    const res = await fetch(`/api/translations/${lang}`);
     if (!res.ok) {
       throw new Error("no remote");
     }
@@ -284,9 +284,4 @@ window.addEventListener("offline", () => {
 });
 window.addEventListener("online", () => {
   console.info("Back online – will fetch translations from your API.");
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  setupConcentrationBar();
 });

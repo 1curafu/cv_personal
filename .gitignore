@@ -1,7 +1,9 @@
 my-cv
 /images/
 node_modules/
-.DS_Store
+DS_Store
 # server/.gitignore
 .env
 serviceAccountKey.json
+fullchain.pem
+privkey.pem

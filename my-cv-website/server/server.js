@@ -1,12 +1,17 @@
+// server.js
+import fs   from "fs";
+import path from "path";
+import http from "http";
+import spdy from "spdy";
 import express from "express";
-import cors    from "cors";
-import admin   from "firebase-admin";
-import path    from "path";
+import cors from "cors";
+import admin from "firebase-admin";
 import { fileURLToPath } from "url";
-import dotenv  from "dotenv";
+import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config();  // loads FIREBASE_* vars
 
+// —– Firebase Service Account Setup —–
 const serviceAccount = {
   type:                        process.env.FIREBASE_TYPE,
   project_id:                  process.env.FIREBASE_PROJECT_ID,
@@ -19,40 +24,36 @@ const serviceAccount = {
   client_x509_cert_url:        process.env.FIREBASE_CLIENT_X509_CERT_URL,
 };
 
-console.log(
-  "PEM ok?",
-  serviceAccount.private_key.startsWith("-----BEGIN PRIVATE KEY-----"),
-  serviceAccount.private_key.endsWith("-----END PRIVATE KEY-----")
-);
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   projectId:  serviceAccount.project_id,
 });
 const db = admin.firestore();
 
+// —– Express App Setup —–
 const app = express();
-// Allow CORS for all origins
 app.use(cors());
 
+// compute __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
-// rootDir === my-cv-website/
-const rootDir = path.join(__dirname, "..");
 
-// Serve all static files from the rootDir
+// serve static files from project root
+const rootDir = path.join(__dirname, "..");
 app.use(express.static(rootDir));
 
-// Define a route to serve the index.html file
+// Index route
 app.get("/", (req, res) => {
   res.sendFile(path.join(rootDir, "index.html"));
 });
 
-// ——— Translations API ———
+// Translations API
 app.get("/api/translations/:lang", async (req, res) => {
   try {
     const snap = await db.collection("translations").doc(req.params.lang).get();
-    if (!snap.exists) return res.status(404).json({ error: "Not found" });
+    if (!snap.exists) {
+      return res.status(404).json({ error: "Not found" });
+    }
     res.json(snap.data());
   } catch (err) {
     console.error("API error:", err);
@@ -60,8 +61,34 @@ app.get("/api/translations/:lang", async (req, res) => {
   }
 });
 
-// ——— Start Server ———
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Let's go on http://localhost:${PORT}`);
-});
+// —– HTTPS / HTTP2 via SPDY —–
+const httpsOpts = {
+  key:  fs.readFileSync(path.join(__dirname, "certs/privkey.pem")),
+  cert: fs.readFileSync(path.join(__dirname, "certs/fullchain.pem")),
+  // spdy will fallback to HTTP/1.1 automatically
+};
+
+const HTTPS_PORT = process.env.PORT || 3000;
+spdy
+  .createServer(httpsOpts, app)
+  .listen(HTTPS_PORT, err => {
+    if (err) {
+      console.error("❌ SPDY/HTTP2 Server failed:", err);
+      process.exit(1);
+    }
+    console.log(`🚀 HTTP/2 + HTTPS server running at https://localhost:${HTTPS_PORT}`);
+  });
+
+// —– Plain HTTP → HTTPS Redirect —–
+const HTTP_PORT = 8080;
+http
+  .createServer((req, res) => {
+    // preserve path + query, redirect to HTTPS
+    const host = req.headers.host?.split(":")[0] || "localhost";
+    const location = `https://${host}:${HTTPS_PORT}${req.url}`;
+    res.writeHead(301, { Location: location });
+    res.end();
+  })
+  .listen(HTTP_PORT, () => {
+    console.log(`🔀 HTTP redirector running at http://localhost:${HTTP_PORT} → https://localhost:${HTTPS_PORT}`);
+  });
