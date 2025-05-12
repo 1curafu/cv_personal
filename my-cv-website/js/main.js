@@ -1,5 +1,5 @@
 async function loadLocalTranslations() {
-  const res = await fetch('my-cv-website/js/translations.json');
+  const res = await fetch('/js/translations.json');
   if (!res.ok) throw new Error('Failed to load local translations');
   return await res.json();
 }
