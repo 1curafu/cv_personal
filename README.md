@@ -34,7 +34,7 @@ A responsive, modern CV website with dark/light mode transition and multi-langua
 - 🎨 **Styling:** Bootstrap 5
 - ⚙️ **Backend:** Node.js, Express.js
 - 🗄️ **Database:** Firebase Firestore
-- 🚀 **Deployment:** [Your deployment platform]
+- 🚀 **Deployment:** Netlify
 
 ## 📁 Project Structure
 
