@@ -46,12 +46,12 @@
   <link rel="preload" as="image" href="assets/avatar.webp" type="image/webp">
 </head>
 <body>
-  <video autoplay muted loop playsinline preload="none" id="light-video" class="bg-video" description="Light Background">
+  <video autoplay muted loop playsinline preload="none" id="light-video" class="bg-video" width="100%" height="100%">
     <source src="assets/light.mp4" type="video/mp4">
     <track src="assets/light-subtitles.vtt" kind="subtitles" srclang="en" label="English">
     <track src="assets/light-description.vtt" kind="descriptions" srclang="en" label="English Description">
   </video>
-  <video autoplay muted loop playsinline preload="none" id="dark-video" class="bg-video" description="Dark Background">
+  <video autoplay muted loop playsinline preload="none" id="dark-video" class="bg-video" width="100%" height="100%">
     <source src="assets/dark.mp4" type="video/mp4">
     <track src="assets/dark-subtitles.vtt" kind="subtitles" srclang="en" label="English">
     <track src="assets/dark-description.vtt" kind="descriptions" srclang="en" label="English Description">
@@ -94,13 +94,13 @@
           <input type="checkbox" id="wave-toggle-checkbox" />
           <label for="wave-toggle-checkbox" class="wave-toggle-label" aria-label="Toggle dark mode">
             <span class="icon-sun">
-              <img src="assets/brightness-high.svg" alt="Sun Light" class="icon-sun-light" />
-              <img src="assets/brightness-high-fill.svg" alt="Sun Dark" class="icon-sun-dark" />
+              <img src="assets/brightness-high.svg" alt="Sun Light" class="icon-sun-light" width="20" height="20" />
+              <img src="assets/brightness-high-fill.svg" alt="Sun Dark" class="icon-sun-dark" width="20" height="20" />
             </span>
 
             <span class="icon-moon">
-              <img src="assets/moon.svg" alt="Moon Light" class="icon-moon-light" />
-              <img src="assets/moon-fill.svg" alt="Moon Dark" class="icon-moon-dark" />
+              <img src="assets/moon.svg" alt="Moon Light" class="icon-moon-light" width="20" height="20" />
+              <img src="assets/moon-fill.svg" alt="Moon Dark" class="icon-moon-dark" width="20" height="20" />
             </span>
 
             <span class="toggle-handle"></span>
@@ -112,7 +112,7 @@
 
   <main>
     <section id="home" class="js-scroll">
-      <img src="assets/avatar.webp" alt="Your Avatar" class="avatar" loading="eager" fetchpriority="high">
+      <img src="assets/avatar.webp" alt="Your Avatar" class="avatar" loading="eager" fetchpriority="high" width="150" height="150">
       <p class="tagline" id="home-tagline" data-key="homeTagline">
         I am Mykhailo Khimich – the worst developer and not a creative thinker.
       </p>
@@ -159,6 +159,14 @@
           </div>
           <div class="vt-circle" style="background-color: #204051;"></div>
           <div class="vt-date" data-key="timelineSecondDate">2023 - ...</div>
+        </div>
+        <div class="vt-item">
+          <div class="vt-content">
+            <h3 data-key="timelineThirdName">Started Web Development</h3>
+            <p data-key="timelineThirdDescription">Studied HTML, CSS, JS, and Python.</p>
+          </div>
+          <div class="vt-circle" style="background-color: #3B6978;"></div>
+          <div class="vt-date" data-key="timelineThirdDate">2023 - ...</div>
         </div>
       </div>
     </section>

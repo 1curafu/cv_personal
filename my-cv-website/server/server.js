@@ -1,8 +1,8 @@
 // server.js
-import fs   from "fs";
+import fs from "fs";
 import path from "path";
 import http from "http";
-import spdy from "spdy";
+import https from "https"; // Changed from http2 to https
 import express from "express";
 import cors from "cors";
 import admin from "firebase-admin";
@@ -57,21 +57,23 @@ app.get("/api/translations/:lang", async (req, res) => {
 });
 
 const httpsOpts = {
-  key:  fs.readFileSync(path.join(__dirname, "certs/privkey.pem")),
-  cert: fs.readFileSync(path.join(__dirname, "certs/fullchain.pem")),
-  // spdy will fallback to HTTP/1.1 automatically
+  key: fs.readFileSync(path.join(__dirname, "certs/privkey.pem")),
+  cert: fs.readFileSync(path.join(__dirname, "certs/fullchain.pem"))
+  // Removed allowHTTP1 as it's not needed for regular HTTPS
 };
 
 const HTTPS_PORT = process.env.PORT || 3000;
-spdy
-  .createServer(httpsOpts, app)
-  .listen(HTTPS_PORT, err => {
-    if (err) {
-      console.error("❌ SPDY/HTTP2 Server failed:", err);
-      process.exit(1);
-    }
-    console.log(`🚀 HTTP/2 + HTTPS server running at https://localhost:${HTTPS_PORT}`);
-  });
+
+// Use a regular HTTPS server instead of HTTP/2
+const server = https.createServer(httpsOpts, app);
+
+server.listen(HTTPS_PORT, err => {
+  if (err) {
+    console.error("❌ HTTPS Server failed:", err);
+    process.exit(1);
+  }
+  console.log(`🚀 HTTPS server running at https://localhost:${HTTPS_PORT}`);
+});
 
 const HTTP_PORT = 8080;
 http
