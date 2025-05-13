@@ -1,29 +1,34 @@
-# Project specific folders
-my-cv/
-/images/
-
 # Dependencies
 node_modules/
 */node_modules/
 
-# Build files
-/dist/
-/build/
+# Package lock files (optional)
+package-lock.json
+*/package-lock.json
 
 # Environment and security files
 .env
+*/.env
 *.env
 serviceAccountKey.json
+*/serviceAccountKey.json
 fullchain.pem
 privkey.pem
 
+# Build files
+/dist/
+/build/
+/.netlify/
+*/functions-internal/
+
+# Project specific folders
+my-cv/
+/images/
+
 # Netlify
-.netlify
+.netlify/
 netlify.toml
 
 # System files
 .DS_Store
 Thumbs.db
-
-# Don't ignore package.json (this should be committed)
-# my-cv-website/package.json
