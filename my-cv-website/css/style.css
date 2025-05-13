@@ -830,4 +830,28 @@ footer,
   }
 }
 
+/* ensure dark-mode-force has priority */
+  html.dark-mode-force body {
+    --foreground: #fff;
+    color: var(--foreground);
+  }
 
+  html.dark-mode-force #light-video {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  html.dark-mode-force #dark-video {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  html.dark-mode-force header {
+    background: rgba(34, 34, 34, 0.8);
+    border-bottom: 1px solid #333;
+  }
+
+  html.dark-mode-force section {
+    background-color: var(--section-bg-dark);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  }

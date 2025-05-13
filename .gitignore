@@ -1,9 +1,29 @@
-my-cv
+# Project specific folders
+my-cv/
 /images/
+
+# Dependencies
 node_modules/
-DS_Store
-# server/.gitignore
+*/node_modules/
+
+# Build files
+/dist/
+/build/
+
+# Environment and security files
 .env
+*.env
 serviceAccountKey.json
 fullchain.pem
 privkey.pem
+
+# Netlify
+.netlify
+netlify.toml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Don't ignore package.json (this should be committed)
+# my-cv-website/package.json

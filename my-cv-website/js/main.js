@@ -1,5 +1,5 @@
 async function loadLocalTranslations() {
-  const res = await fetch('/js/translations.json');
+  const res = await fetch('js/translations.json');
   if (!res.ok) throw new Error('Failed to load local translations');
   return await res.json();
 }
@@ -19,7 +19,6 @@ async function fetchRemoteTranslations(lang) {
 const elementsToTranslate = document.querySelectorAll('[data-key]');
 const titleElement = document.getElementById('title-text');
 
-// Apply a given language’s dict to the page
 async function applyTranslations(lang) {
   const dict = await fetchRemoteTranslations(lang);
 
@@ -46,19 +45,60 @@ document.addEventListener('DOMContentLoaded', () => {
       await applyTranslations(lang);
     });
   });
+  
+  initializeDarkMode();
 });
 
-// Dark-mode toggle
-const waveToggle = document.getElementById('wave-toggle-checkbox');
-const isDarkMode = localStorage.getItem('dark-mode') === 'true';
-document.documentElement.classList.toggle('darkmode', isDarkMode);
-waveToggle.checked = isDarkMode;
-
-waveToggle.addEventListener('change', () => {
-  const on = waveToggle.checked;
-  document.documentElement.classList.toggle('darkmode', on);
-  localStorage.setItem('dark-mode', on);
-});
+// Unified dark mode handling
+function initializeDarkMode() {
+  const waveToggle = document.getElementById('wave-toggle-checkbox');
+  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+  
+  // Function to apply dark mode settings
+  function applyDarkMode(darkMode) {
+    waveToggle.checked = darkMode;
+    
+    document.documentElement.classList.toggle('darkmode', darkMode);
+    
+    if (darkMode) {
+      document.documentElement.classList.add('dark-mode-force');
+      document.documentElement.classList.remove('light-mode-force');
+    } else {
+      document.documentElement.classList.add('light-mode-force');
+      document.documentElement.classList.remove('dark-mode-force');
+    }
+  }
+  
+  // Apply system preference (auto-detection)
+  function followSystemPreference() {
+    const systemDarkMode = prefersDarkMode.matches;
+    applyDarkMode(systemDarkMode);
+    localStorage.removeItem('dark-mode');
+  }
+  
+  followSystemPreference();
+  
+  // Handle toggle click - allow temporary override
+  waveToggle.addEventListener('change', () => {
+    const darkModeOn = waveToggle.checked;
+    applyDarkMode(darkModeOn);
+    sessionStorage.setItem('temp-dark-mode', darkModeOn);
+  });
+  
+  // Always stay in sync with system changes
+  prefersDarkMode.addEventListener('change', (e) => {
+    if (!sessionStorage.getItem('temp-dark-mode')) {
+      applyDarkMode(e.matches);
+    }
+  });
+  
+  // Double-click to reset to system preference
+  waveToggle.addEventListener('dblclick', (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem('temp-dark-mode');
+    followSystemPreference();
+  });
+}
 
 // Intersection-observer scroll animations
 const scrollEls = document.querySelectorAll('.js-scroll');
@@ -83,7 +123,7 @@ function setVH() {
 setVH();
 window.addEventListener('resize', setVH);
 
-// Fallback scroll-animation logic and prefers-color-scheme handling
+// Smooth scroll to top
 document.addEventListener('DOMContentLoaded', function() {
   const scrollElements = document.querySelectorAll('.js-scroll');
 
@@ -108,26 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => { cb(); throttleTimer = false; }, time);
   };
   window.addEventListener('scroll', () => throttle(handleScroll, 250));
-
-  const darkModeToggle = document.getElementById('wave-toggle-checkbox');
-  const prefers = window.matchMedia('(prefers-color-scheme: dark)');
-
-  if (localStorage.getItem('darkMode') === null && prefers.matches) {
-    document.body.classList.add('darkmode');
-    darkModeToggle.checked = true;
-  }
-
-  prefers.addEventListener('change', e => {
-    if (localStorage.getItem('darkMode') === null) {
-      if (e.matches) {
-        document.body.classList.add('darkmode');
-        darkModeToggle.checked = true;
-      } else {
-        document.body.classList.remove('darkmode');
-        darkModeToggle.checked = false;
-      }
-    }
-  });
 });
 
 // Touch-device detection
