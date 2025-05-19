@@ -1,4 +1,3 @@
-// Mobile menu toggle
 document.addEventListener('DOMContentLoaded', function() {
   // Calculate vh unit for mobile browsers
   function setVh() {
@@ -28,22 +27,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Sync dark mode toggles between mobile and desktop
+  // Dark mode toggle functionality - refactored
   const desktopToggle = document.getElementById('wave-toggle-checkbox');
   const mobileToggle = document.getElementById('mobile-wave-toggle-checkbox');
   
   if (desktopToggle && mobileToggle) {
-    desktopToggle.addEventListener('change', function() {
-      mobileToggle.checked = desktopToggle.checked;
+    // Unified toggle change handler
+    function handleToggleChange(sourceToggle, targetToggle) {
+      targetToggle.checked = sourceToggle.checked;
       updateDarkMode();
+    }
+    
+    desktopToggle.addEventListener('change', function() {
+      handleToggleChange(desktopToggle, mobileToggle);
     });
     
     mobileToggle.addEventListener('change', function() {
-      desktopToggle.checked = mobileToggle.checked;
-      updateDarkMode();
+      handleToggleChange(mobileToggle, desktopToggle);
     });
     
-    // Initialize dark/light mode based on user preference
     function updateDarkMode() {
       if (desktopToggle.checked) {
         document.body.classList.add('darkmode');
@@ -125,13 +127,30 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   function changeLanguage(lang) {
-    // Update dropdown button text
-    document.getElementById('languageDropdown').textContent = lang.toUpperCase();
-    document.getElementById('mobileLanguageDropdown').textContent = lang.toUpperCase();
+    const langDropdowns = document.querySelectorAll('.dropdown-toggle');
+    langDropdowns.forEach(dropdown => {
+      if (dropdown.id === 'languageDropdown' || dropdown.id === 'mobileLanguageDropdown') {
+        dropdown.textContent = lang.toUpperCase();
+      }
+    });
     
-    // Fetch translations from server (adjust the URL as needed)
-    fetch(`/api/translations/${lang}`)
-      .then(response => response.json())
+    const apiUrl = window.location.hostname === 'localhost' 
+      ? `/api/translations/${lang}` 
+      : `/.netlify/functions/translations/${lang}`;
+    
+    // Show loading state
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+      section.classList.add('loading');
+    });
+    
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(translations => {
         document.querySelectorAll('[data-key]').forEach(element => {
           const key = element.getAttribute('data-key');
@@ -143,17 +162,121 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           }
         });
+        
+        // Remove loading state
+        sections.forEach(section => {
+          section.classList.remove('loading');
+        });
       })
       .catch(error => {
         console.error('Error loading translations:', error);
+        
+        // Remove loading state even on error
+        sections.forEach(section => {
+          section.classList.remove('loading');
+        });
+        
+        // Fallback to English on error
+        if (lang !== 'en') {
+          console.log('Falling back to English');
+          changeLanguage('en');
+        }
       });
       
     localStorage.setItem('preferredLanguage', lang);
   }
   
-  // Load saved language preference
+  // Initialize language based on saved preference or browser setting
+  const supportedLangs = ['en', 'de', 'ru', 'ua'];
   const savedLang = localStorage.getItem('preferredLanguage');
-  if (savedLang) {
-    changeLanguage(savedLang);
+  
+  let initialLang = 'en'; // Default fallback
+  
+  if (savedLang && supportedLangs.includes(savedLang)) {
+    initialLang = savedLang;
+  } else {
+    const browserLang = navigator.language.split('-')[0];
+    if (supportedLangs.includes(browserLang)) {
+      initialLang = browserLang;
+    }
+  }
+  
+  changeLanguage(initialLang);
+  
+  // Try to autoplay videos and add fallback for mobile
+  const videos = document.querySelectorAll('video');
+  if (videos.length) {
+    const attemptVideoPlay = () => {
+      videos.forEach(video => {
+        video.play().catch(() => {
+        });
+      });
+    };
+    
+    attemptVideoPlay();
+    
+    document.addEventListener('touchstart', attemptVideoPlay, { once: true });
+  }
+  
+  const skillPoints = document.querySelectorAll('.point-group');
+  skillPoints.forEach(point => {
+    point.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      skillPoints.forEach(p => p.classList.remove('active'));
+      point.classList.add('active');
+    });
+  });
+  
+  const closeMenusHandler = function(e) {
+    // Close dropdown menus when clicking/touching outside
+    const dropdowns = document.querySelectorAll('.dropdown-menu.show');
+    if (dropdowns.length && !e.target.closest('.dropdown')) {
+      dropdowns.forEach(dropdown => {
+        dropdown.classList.remove('show');
+      });
+    }
+    
+    // Close mobile menu when clicking/touching outside
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileToggler = document.querySelector('.navbar-toggler');
+    
+    if (mobileMenu && mobileMenu.classList.contains('show') && 
+        !mobileMenu.contains(e.target) && 
+        !mobileToggler.contains(e.target)) {
+      mobileMenu.classList.remove('show');
+      mobileToggler.classList.remove('active');
+    }
+  };
+  
+  // Add unified handler to both click and touch events
+  document.addEventListener('click', closeMenusHandler);
+  document.addEventListener('touchstart', closeMenusHandler);
+  
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        const headerOffset = 70;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+  
+  // Initialize Bootstrap tooltips
+  if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
   }
 });
