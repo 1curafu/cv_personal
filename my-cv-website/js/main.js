@@ -271,12 +271,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-  
-  // Initialize Bootstrap tooltips
-  if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-  }
 });
