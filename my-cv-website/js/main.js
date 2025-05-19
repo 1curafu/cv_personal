@@ -1,163 +1,159 @@
-async function loadLocalTranslations() {
-  const res = await fetch('js/translations.json');
-  if (!res.ok) throw new Error('Failed to load local translations');
-  return await res.json();
-}
-
-async function fetchRemoteTranslations(lang) {
-  try {
-    const res = await fetch(`/api/translations/${lang}`);
-    if (!res.ok) throw new Error('no remote');
-    return await res.json();
-  } catch (e) {
-    console.warn('Falling back to local translations:', e);
-    const all = await loadLocalTranslations();
-    return all[lang] || all['en'];
+// Mobile menu toggle
+document.addEventListener('DOMContentLoaded', function() {
+  // Calculate vh unit for mobile browsers
+  function setVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
-}
-
-const elementsToTranslate = document.querySelectorAll('[data-key]');
-const titleElement = document.getElementById('title-text');
-
-async function applyTranslations(lang) {
-  const dict = await fetchRemoteTranslations(lang);
-
-  titleElement.textContent = dict.titleText || '';
-
-  elementsToTranslate.forEach(el => {
-    const key = el.dataset.key;
-    el.textContent = dict[key] || dict.homeIntro || '';
-  });
-}
-
-// On page load: set language, populate text, wire up the dropdown
-document.addEventListener('DOMContentLoaded', () => {
-  const savedLang = sessionStorage.getItem('language') || 'en';
-  applyTranslations(savedLang);
-  document.getElementById('languageDropdown').textContent = savedLang.toUpperCase();
-
-  document.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', async e => {
-      e.preventDefault();
-      const lang = item.dataset.lang;
-      sessionStorage.setItem('language', lang);
-      document.getElementById('languageDropdown').textContent = lang.toUpperCase();
-      await applyTranslations(lang);
+  
+  setVh();
+  window.addEventListener('resize', setVh);
+  
+  // Handle mobile menu toggle
+  const mobileToggler = document.querySelector('.navbar-toggler');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  
+  if (mobileToggler && mobileMenu) {
+    mobileToggler.addEventListener('click', function() {
+      mobileMenu.classList.toggle('show');
+      mobileToggler.classList.toggle('active');
     });
-  });
-  
-  initializeDarkMode();
-});
-
-// Unified dark mode handling
-function initializeDarkMode() {
-  const waveToggle = document.getElementById('wave-toggle-checkbox');
-  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
-  
-  // Function to apply dark mode settings
-  function applyDarkMode(darkMode) {
-    waveToggle.checked = darkMode;
     
-    document.documentElement.classList.toggle('darkmode', darkMode);
+    // Close menu when clicking on nav links
+    document.querySelectorAll('.mobile-nav-links .nav-link').forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('show');
+        mobileToggler.classList.remove('active');
+      });
+    });
+  }
+  
+  // Sync dark mode toggles between mobile and desktop
+  const desktopToggle = document.getElementById('wave-toggle-checkbox');
+  const mobileToggle = document.getElementById('mobile-wave-toggle-checkbox');
+  
+  if (desktopToggle && mobileToggle) {
+    desktopToggle.addEventListener('change', function() {
+      mobileToggle.checked = desktopToggle.checked;
+      updateDarkMode();
+    });
     
-    if (darkMode) {
-      document.documentElement.classList.add('dark-mode-force');
-      document.documentElement.classList.remove('light-mode-force');
+    mobileToggle.addEventListener('change', function() {
+      desktopToggle.checked = mobileToggle.checked;
+      updateDarkMode();
+    });
+    
+    // Initialize dark/light mode based on user preference
+    function updateDarkMode() {
+      if (desktopToggle.checked) {
+        document.body.classList.add('darkmode');
+        document.documentElement.classList.add('dark-mode-force');
+        document.documentElement.classList.remove('light-mode-force');
+        localStorage.setItem('darkMode', 'true');
+      } else {
+        document.body.classList.remove('darkmode');
+        document.documentElement.classList.remove('dark-mode-force');
+        document.documentElement.classList.add('light-mode-force');
+        localStorage.setItem('darkMode', 'false');
+      }
+    }
+    
+    // Check for saved dark mode preference
+    const savedDarkMode = localStorage.getItem('darkMode');
+    
+    if (savedDarkMode === 'true') {
+      desktopToggle.checked = true;
+      mobileToggle.checked = true;
+      updateDarkMode();
+    } else if (savedDarkMode === 'false') {
+      desktopToggle.checked = false;
+      mobileToggle.checked = false;
+      updateDarkMode();
     } else {
-      document.documentElement.classList.add('light-mode-force');
-      document.documentElement.classList.remove('dark-mode-force');
+      // Check system preference if no saved preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        desktopToggle.checked = true;
+        mobileToggle.checked = true;
+        updateDarkMode();
+      }
     }
   }
   
-  // Apply system preference (auto-detection)
-  function followSystemPreference() {
-    const systemDarkMode = prefersDarkMode.matches;
-    applyDarkMode(systemDarkMode);
-    localStorage.removeItem('dark-mode');
+  // Scroll animations
+  const scrollElements = document.querySelectorAll('.js-scroll');
+  
+  function elementInView(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+      rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+      rect.bottom >= 0
+    );
   }
   
-  followSystemPreference();
+  function displayScrollElement(element) {
+    element.classList.add('scrolled');
+  }
   
-  // Handle toggle click - allow temporary override
-  waveToggle.addEventListener('change', () => {
-    const darkModeOn = waveToggle.checked;
-    applyDarkMode(darkModeOn);
-    sessionStorage.setItem('temp-dark-mode', darkModeOn);
-  });
+  function hideScrollElement(element) {
+    element.classList.remove('scrolled');
+  }
   
-  // Always stay in sync with system changes
-  prefersDarkMode.addEventListener('change', (e) => {
-    if (!sessionStorage.getItem('temp-dark-mode')) {
-      applyDarkMode(e.matches);
-    }
-  });
-  
-  // Double-click to reset to system preference
-  waveToggle.addEventListener('dblclick', (e) => {
-    e.preventDefault();
-    sessionStorage.removeItem('temp-dark-mode');
-    followSystemPreference();
-  });
-}
-
-// Intersection-observer scroll animations
-const scrollEls = document.querySelectorAll('.js-scroll');
-const observer = new IntersectionObserver(
-  entries => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        en.target.classList.add('scrolled');
-        observer.unobserve(en.target);
+  function handleScrollAnimation() {
+    scrollElements.forEach((el) => {
+      if (elementInView(el)) {
+        displayScrollElement(el);
+      } else {
+        hideScrollElement(el);
       }
     });
-  },
-  { threshold: 0.2 }
-);
-scrollEls.forEach(el => observer.observe(el));
-
-// CSS variable for mobile viewport units
-function setVH() {
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-setVH();
-window.addEventListener('resize', setVH);
-
-// Smooth scroll to top
-document.addEventListener('DOMContentLoaded', function() {
-  const scrollElements = document.querySelectorAll('.js-scroll');
-
-  const elementInView = (el, pct = 100) => {
-    const top = el.getBoundingClientRect().top;
-    const height = el.getBoundingClientRect().height;
-    return top <= ((window.innerHeight || document.documentElement.clientHeight) * (pct/100));
-  };
-
-  const handleScroll = () => {
-    scrollElements.forEach(el => {
-      if (elementInView(el, 90)) el.classList.add('scrolled');
-      else el.classList.remove('scrolled');
+  }
+  
+  // Initialize scroll animations
+  window.addEventListener('scroll', handleScrollAnimation);
+  handleScrollAnimation();
+  
+  // Handle language selection
+  const langButtons = document.querySelectorAll('[data-lang]');
+  
+  langButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const lang = this.getAttribute('data-lang');
+      changeLanguage(lang);
     });
-  };
-
-  handleScroll();
-  let throttleTimer;
-  const throttle = (cb, time) => {
-    if (throttleTimer) return;
-    throttleTimer = true;
-    setTimeout(() => { cb(); throttleTimer = false; }, time);
-  };
-  window.addEventListener('scroll', () => throttle(handleScroll, 250));
-});
-
-// Touch-device detection
-document.documentElement.classList.add(
-  ('ontouchstart' in window) ? 'touch-device' : 'no-touch'
-);
-
-window.addEventListener('offline', () => {
-  console.warn('Offline – using local translations.');
-});
-window.addEventListener('online', () => {
-  console.info('Back online – will fetch translations from your API.');
+  });
+  
+  function changeLanguage(lang) {
+    // Update dropdown button text
+    document.getElementById('languageDropdown').textContent = lang.toUpperCase();
+    document.getElementById('mobileLanguageDropdown').textContent = lang.toUpperCase();
+    
+    // Fetch translations from server (adjust the URL as needed)
+    fetch(`/api/translations/${lang}`)
+      .then(response => response.json())
+      .then(translations => {
+        document.querySelectorAll('[data-key]').forEach(element => {
+          const key = element.getAttribute('data-key');
+          if (translations[key]) {
+            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+              element.value = translations[key];
+            } else {
+              element.textContent = translations[key];
+            }
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error loading translations:', error);
+      });
+      
+    localStorage.setItem('preferredLanguage', lang);
+  }
+  
+  // Load saved language preference
+  const savedLang = localStorage.getItem('preferredLanguage');
+  if (savedLang) {
+    changeLanguage(savedLang);
+  }
 });

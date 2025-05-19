@@ -2,9 +2,10 @@
 import fs from "fs";
 import path from "path";
 import http from "http";
-import https from "https"; // Changed from http2 to https
+import https from "https"; 
 import express from "express";
 import cors from "cors";
+import compression from "compression";
 import admin from "firebase-admin";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
@@ -31,6 +32,17 @@ const db = admin.firestore();
 
 const app = express();
 app.use(cors());
+
+app.use(compression({
+  level: 6,
+  threshold: 0,
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    return compression.filter(req, res);
+  }
+}));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
@@ -59,7 +71,6 @@ app.get("/api/translations/:lang", async (req, res) => {
 const httpsOpts = {
   key: fs.readFileSync(path.join(__dirname, "certs/privkey.pem")),
   cert: fs.readFileSync(path.join(__dirname, "certs/fullchain.pem"))
-  // Removed allowHTTP1 as it's not needed for regular HTTPS
 };
 
 const HTTPS_PORT = process.env.PORT || 3000;
