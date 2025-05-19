@@ -1,8 +1,8 @@
 # ✨ Interactive CV Website ✨
 
-A responsive, modern CV website with dark/light mode transition and multi-language support.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8fe0561e-811d-436a-812c-424a1b21f8f4/deploy-status)](https://app.netlify.com/projects/cv-mykhailo-khimich/deploys)
 
-![CV Website Screenshot](https://github.com/yourusername/cv-website/assets/placeholder.png)
+A responsive, modern CV website with dark/light mode transition and multi-language support.
 
 <div align="center">
 
