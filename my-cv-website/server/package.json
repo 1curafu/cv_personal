@@ -24,7 +24,6 @@
     "url": "^0.11.4"
   },
   "devDependencies": {
-    "firebase-admin": "^13.4.0",
-    "netlify-cli": "^21.2.1"
+    "firebase-admin": "^13.4.0"
   }
 }
