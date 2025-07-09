@@ -271,4 +271,78 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  
+  // Contact form functionality
+  const contactForm = document.getElementById('contact-form');
+  const contactStatus = document.getElementById('contact-status');
+  
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = contactForm.querySelector('.contact-submit-btn');
+      const submitText = submitBtn.querySelector('.submit-text');
+      const submitLoading = submitBtn.querySelector('.submit-loading');
+      
+      // Get form data
+      const formData = {
+        name: document.getElementById('contact-name').value.trim(),
+        email: document.getElementById('contact-email').value.trim(),
+        subject: document.getElementById('contact-subject').value.trim(),
+        message: document.getElementById('contact-message').value.trim()
+      };
+      
+      // Basic validation
+      if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+        showStatus('Please fill in all required fields.', 'error');
+        return;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        showStatus('Please enter a valid email address.', 'error');
+        return;
+      }
+      
+      submitBtn.disabled = true;
+      submitText.style.display = 'none';
+      submitLoading.style.display = 'inline';
+      
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showStatus('Message sent successfully! I\'ll get back to you soon.', 'success');
+          contactForm.reset();
+        } else {
+          throw new Error(result.error || 'Failed to send message');
+        }
+      } catch (error) {
+        console.error('Contact form error:', error);
+        showStatus('Failed to send message. Please try again later.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitText.style.display = 'inline';
+        submitLoading.style.display = 'none';
+      }
+    });
+  }
+  
+  function showStatus(message, type) {
+    contactStatus.textContent = message;
+    contactStatus.className = `contact-status ${type} show`;
+    
+    setTimeout(() => {
+      contactStatus.classList.remove('show');
+    }, 5000);
+  }
 });
