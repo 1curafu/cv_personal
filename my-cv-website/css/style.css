@@ -988,6 +988,16 @@ html.dark-mode-force section {
   color: var(--foreground);
 }
 
+.contact-form .form-control::placeholder {
+  color: #666;
+  opacity: 1;
+}
+
+.darkmode .contact-form .form-control::placeholder {
+  color: #bbb;
+  opacity: 1;
+}
+
 .contact-form .form-control:focus {
   outline: none;
   border-color: var(--primary-color-light);
