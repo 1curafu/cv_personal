@@ -14,9 +14,9 @@ A responsive, modern CV website with dark/light mode transition and multi-langua
 
 </div>
 
-## 🌟 Live Demo
+## 🌟 Live Website
 
-[View Live Demo](https://cv-mykhailo-khimich.netlify.app)
+[View Website ](https://cv-mykhailo-khimich.netlify.app)
 
 ## ✨ Features
 
