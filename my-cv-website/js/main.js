@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', function() {
   setVh();
   window.addEventListener('resize', setVh);
   
+  // Helper to determine API base URL
+  function getApiBaseUrl() {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    return isLocal ? '/api' : '/.netlify/functions';
+  }
+  
   // Handle mobile menu toggle
   const mobileToggler = document.querySelector('.navbar-toggler');
   const mobileMenu = document.querySelector('.mobile-menu');
@@ -134,9 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    const apiUrl = window.location.hostname === 'localhost' 
-      ? `/api/translations/${lang}` 
-      : `/.netlify/functions/translations/${lang}`;
+    const apiUrl = `${getApiBaseUrl()}/translations/${lang}`;
     
     // Show loading state
     const sections = document.querySelectorAll('section');
@@ -310,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
       submitLoading.style.display = 'inline';
       
       try {
-        const response = await fetch('/api/contact', {
+        const response = await fetch(`${getApiBaseUrl()}/contact`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
