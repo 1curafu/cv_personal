@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Helper to determine API base URL
   function getApiBaseUrl() {
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    return isLocal ? '/api' : '/.netlify/functions';
+    // Always use /api - Netlify redirects handle routing to functions
+    return '/api';
   }
   
   // Handle mobile menu toggle
