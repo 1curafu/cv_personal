@@ -31,4 +31,4 @@ netlify.toml
 
 # System files
 .DS_Store
-Thumbs.db
+Thumbs.dbdocs/
