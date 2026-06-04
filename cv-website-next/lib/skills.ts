@@ -6,7 +6,9 @@ export interface Skill {
   level: 1 | 2 | 3 | 4 | 5
 }
 
-export const LEVEL_LABELS: Record<number, string> = {
+export type TabKey = 'all' | SkillCategory
+
+export const LEVEL_LABELS: Record<Skill['level'], string> = {
   1: 'basic',
   2: 'working',
   3: 'proficient',
@@ -14,7 +16,7 @@ export const LEVEL_LABELS: Record<number, string> = {
   5: 'expert',
 }
 
-export const SKILLS: Skill[] = [
+export const SKILLS: readonly Skill[] = [
   { name: 'React',        category: 'front', level: 5 },
   { name: 'TypeScript',   category: 'lang',  level: 5 },
   { name: 'JavaScript',   category: 'lang',  level: 5 },
