@@ -32,15 +32,21 @@ export default function Cursor() {
     window.addEventListener('mousemove', onMouseMove)
     rafId = requestAnimationFrame(loop)
 
+    const onHotEnter = () => ring.classList.add('hot')
+    const onHotLeave = () => ring.classList.remove('hot')
     const hotEls = document.querySelectorAll('a, button, input, textarea')
     hotEls.forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('hot'))
-      el.addEventListener('mouseleave', () => ring.classList.remove('hot'))
+      el.addEventListener('mouseenter', onHotEnter)
+      el.addEventListener('mouseleave', onHotLeave)
     })
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
       cancelAnimationFrame(rafId)
+      hotEls.forEach(el => {
+        el.removeEventListener('mouseenter', onHotEnter)
+        el.removeEventListener('mouseleave', onHotLeave)
+      })
     }
   }, [])
 

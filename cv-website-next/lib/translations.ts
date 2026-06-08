@@ -25,6 +25,7 @@ export type TranslationKey =
   | 'contactNameLabel' | 'contactEmailLabel' | 'contactSubjectLabel' | 'contactMessageLabel'
   | 'contactSubmitBtn' | 'contactSending'
   | 'contactCopy' | 'contactCopied'
+  | 'contactStatusSuccess' | 'contactStatusError' | 'contactStatusNetwork'
   | 'footerCta' | 'footerTop'
 
 export type Translations = Record<TranslationKey, string>
@@ -78,6 +79,9 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
     contactSubjectLabel: 'Subject', contactMessageLabel: 'Message',
     contactSubmitBtn: 'Send message', contactSending: 'Sending…',
     contactCopy: 'Copy email', contactCopied: 'Copied!',
+    contactStatusSuccess: '✓ Thanks! Your message is on its way.',
+    contactStatusError: 'Something went wrong. Please try again.',
+    contactStatusNetwork: 'Network error. Please try again.',
     footerCta: 'Thanks for scrolling all the way down.', footerTop: 'Back to top',
   },
   de: {
@@ -128,6 +132,9 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
     contactSubjectLabel: 'Betreff', contactMessageLabel: 'Nachricht',
     contactSubmitBtn: 'Nachricht senden', contactSending: 'Wird gesendet…',
     contactCopy: 'E-Mail kopieren', contactCopied: 'Kopiert!',
+    contactStatusSuccess: '✓ Danke! Deine Nachricht ist unterwegs.',
+    contactStatusError: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
+    contactStatusNetwork: 'Netzwerkfehler. Bitte versuche es erneut.',
     footerCta: 'Danke fürs Scrollen bis ganz nach unten.', footerTop: 'Nach oben',
   },
   ru: {
@@ -178,6 +185,9 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
     contactSubjectLabel: 'Тема', contactMessageLabel: 'Сообщение',
     contactSubmitBtn: 'Отправить', contactSending: 'Отправка…',
     contactCopy: 'Скопировать email', contactCopied: 'Скопировано!',
+    contactStatusSuccess: '✓ Спасибо! Ваше сообщение отправлено.',
+    contactStatusError: 'Что-то пошло не так. Попробуйте ещё раз.',
+    contactStatusNetwork: 'Ошибка сети. Попробуйте ещё раз.',
     footerCta: 'Спасибо, что долистали до конца.', footerTop: 'Наверх',
   },
   ua: {
@@ -228,6 +238,9 @@ export const TRANSLATIONS: Record<Lang, Translations> = {
     contactSubjectLabel: 'Тема', contactMessageLabel: 'Повідомлення',
     contactSubmitBtn: 'Надіслати', contactSending: 'Надсилання…',
     contactCopy: 'Скопіювати email', contactCopied: 'Скопійовано!',
+    contactStatusSuccess: '✓ Дякую! Ваше повідомлення надіслано.',
+    contactStatusError: 'Щось пішло не так. Спробуйте ще раз.',
+    contactStatusNetwork: 'Помилка мережі. Спробуйте ще раз.',
     footerCta: 'Дякую, що догортали до кінця.', footerTop: 'Нагору',
   },
 }
