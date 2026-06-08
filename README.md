@@ -14,7 +14,7 @@ A responsive, modern CV / portfolio site built with Next.js, featuring dark/ligh
 
 ## 🌟 Live Website
 
-[View Website ](https://cv-mykhailo-khimich.netlify.app)
+[View Website ](https://cv-personal-hazel.vercel.app/)
 
 ## ✨ Features
 
