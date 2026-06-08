@@ -12,9 +12,9 @@ A responsive, modern CV / portfolio site built with Next.js, featuring dark/ligh
 
 </div>
 
-## 🌟 Live Demo
+## 🌟 Live Website
 
-[View Live Demo](https://cv-mykhailo-khimich.netlify.app)
+[View Website ](https://cv-mykhailo-khimich.netlify.app)
 
 ## ✨ Features
 
