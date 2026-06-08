@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Space_Grotesk, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
-import { PaletteProvider } from '@/context/PaletteContext'
+import { LangProvider } from '@/context/LangContext'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -39,9 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <PaletteProvider>
-            {children}
-          </PaletteProvider>
+          <LangProvider>{children}</LangProvider>
         </ThemeProvider>
       </body>
     </html>

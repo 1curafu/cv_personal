@@ -36,7 +36,7 @@ export default function Timeline() {
   return (
     <section id="timeline" className="py-[clamp(60px,9vw,130px)]">
       <div ref={headRef} className="reveal flex items-baseline gap-[18px] mb-12">
-        <span className="font-display font-bold text-[15px] text-accent tracking-[.1em]">03</span>
+        <span className="font-display font-bold text-[15px] text-accent tracking-[.1em]">04</span>
         <h2 className="font-display font-bold text-[clamp(34px,6vw,64px)] tracking-tight">
           {t('timelineHeading')}
         </h2>

@@ -6,6 +6,7 @@ import Hero           from '@/components/Hero'
 import Marquee        from '@/components/Marquee'
 import About          from '@/components/About'
 import Work           from '@/components/Work'
+import LiveWeather    from '@/components/LiveWeather'
 import Timeline       from '@/components/Timeline'
 import Skills         from '@/components/Skills'
 import Contact        from '@/components/Contact'
@@ -23,6 +24,7 @@ export default function Page() {
         <Marquee />
         <About />
         <Work />
+        <LiveWeather />
         <Timeline />
         <Skills />
         <Contact />

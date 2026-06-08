@@ -3,20 +3,20 @@
 /* ── Dark mode: activate when .dark class is on <html> (set by next-themes) ── */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ── Raw CSS color tokens — 3 palettes × 2 modes ── */
+/* ── Raw CSS color tokens — periwinkle, 2 modes ── */
 /* These cascade normally; @theme inline below maps them to Tailwind utilities. */
 :root {
-  /* Teal (default) — light */
-  --accent:    #164E63;
+  /* Periwinkle — light */
+  --accent:    #405173;
   --on-accent: #FFFFFF;
-  --bg:        #EEF9FB;
+  --bg:        #F1F4FC;
   --bg-soft:   #FFFFFF;
-  --ink:       #102A32;
-  --ink-2:     #436670;
-  --line:      #D2E7EB;
+  --ink:       #1B2236;
+  --ink-2:     #4A5573;
+  --line:      #DCE3F3;
   --card:      #FFFFFF;
 
-  /* Console panel — always dark, never changes with mode/palette */
+  /* Console panel — always dark, never changes with mode */
   --c-bg:   #0B0A12;
   --c-line: rgba(255,255,255,.10);
   --c-dim:  rgba(255,255,255,.45);
@@ -24,42 +24,15 @@
 }
 
 html.dark {
-  --accent:    #CCFBFE;
-  --on-accent: #06262E;
-  --bg:        #061419;
-  --bg-soft:   #0B1E25;
-  --ink:       #E9F8FB;
-  --ink-2:     #7FA8B3;
-  --line:      #143038;
-  --card:      #0B1E25;
-}
-
-/* Periwinkle palette */
-html[data-palette="peri"] {
-  --accent:    #405173; --on-accent: #FFFFFF;
-  --bg:        #F1F4FC; --bg-soft:   #FFFFFF;
-  --ink:       #1B2236; --ink-2:     #4A5573;
-  --line:      #DCE3F3; --card:      #FFFFFF;
-}
-html[data-palette="peri"].dark {
-  --accent:    #D9E5FF; --on-accent: #1B2236;
-  --bg:        #0B0E17; --bg-soft:   #121726;
-  --ink:       #EEF2FC; --ink-2:     #9AA6C4;
-  --line:      #232B40; --card:      #121726;
-}
-
-/* Green palette */
-html[data-palette="green"] {
-  --accent:    #1F8A5B; --on-accent: #FFFFFF;
-  --bg:        #EFFBF4; --bg-soft:   #FFFFFF;
-  --ink:       #0F2A1E; --ink-2:     #43705B;
-  --line:      #D3EBDE; --card:      #FFFFFF;
-}
-html[data-palette="green"].dark {
-  --accent:    #BBF7D0; --on-accent: #06291A;
-  --bg:        #07150F; --bg-soft:   #0C1F17;
-  --ink:       #E9FBF1; --ink-2:     #7FB39A;
-  --line:      #143028; --card:      #0C1F17;
+  /* Periwinkle — dark */
+  --accent:    #D9E5FF;
+  --on-accent: #1B2236;
+  --bg:        #0B0E17;
+  --bg-soft:   #121726;
+  --ink:       #EEF2FC;
+  --ink-2:     #9AA6C4;
+  --line:      #232B40;
+  --card:      #121726;
 }
 
 /* ── Map raw vars to Tailwind v4 utilities via @theme inline ── */
@@ -129,21 +102,26 @@ html[data-palette="green"].dark {
 }
 
 /* ── Base ── */
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+/* Layered into `base` so Tailwind utilities (e.g. text-on-accent) win the cascade.
+   Unlayered, `a { color: inherit }` would override utility text colors — which made
+   the hero "See my work" button inherit --ink instead of --on-accent. */
+@layer base {
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-body {
-  font-family: var(--font-body, system-ui, sans-serif);
-  background: var(--bg);
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  transition: background .5s ease, color .5s ease;
+  body {
+    font-family: var(--font-body, system-ui, sans-serif);
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background .5s ease, color .5s ease;
+  }
+
+  ::selection { background: var(--accent); color: var(--on-accent); }
+  h1, h2, h3 { font-family: var(--font-display, system-ui, sans-serif); }
+  a { color: inherit; text-decoration: none; }
 }
-
-::selection { background: var(--accent); color: var(--on-accent); }
-h1, h2, h3 { font-family: var(--font-display, system-ui, sans-serif); }
-a { color: inherit; text-decoration: none; }
 
 /* ── Reveal animation ── */
 .reveal {

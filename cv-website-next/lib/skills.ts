@@ -18,6 +18,7 @@ export const LEVEL_LABELS: Record<Skill['level'], string> = {
 
 export const SKILLS: readonly Skill[] = [
   { name: 'React',        category: 'front', level: 5 },
+  { name: 'Next.js',      category: 'front', level: 4 },
   { name: 'TypeScript',   category: 'lang',  level: 5 },
   { name: 'JavaScript',   category: 'lang',  level: 5 },
   { name: 'Tailwind',     category: 'front', level: 4 },
@@ -28,6 +29,7 @@ export const SKILLS: readonly Skill[] = [
   { name: 'C#',           category: 'lang',  level: 3 },
   { name: 'SQL',          category: 'lang',  level: 3 },
   { name: 'REST APIs',    category: 'back',  level: 4 },
+  { name: 'Supabase',     category: 'back',  level: 4 },
   { name: 'Auth & Data',  category: 'back',  level: 3 },
   { name: 'Git',          category: 'tools', level: 4 },
   { name: 'Bash',         category: 'tools', level: 3 },

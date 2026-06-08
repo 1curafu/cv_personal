@@ -1,16 +1,14 @@
 # ✨ Interactive CV Website ✨
 
-A responsive, modern CV website with dark/light mode transition and multi-language support.
-
-![CV Website Screenshot](https://github.com/yourusername/cv-website/assets/placeholder.png)
+A responsive, modern CV / portfolio site built with Next.js, featuring dark/light mode, multi-language support, a live weather widget, and a working contact form.
 
 <div align="center">
 
-[![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
 </div>
 
@@ -21,120 +19,125 @@ A responsive, modern CV website with dark/light mode transition and multi-langua
 ## ✨ Features
 
 - 📱 **Responsive Design** - Looks great on all devices
-- 🌓 **Dark/Light Mode** - Toggle between dark and light themes with animated backgrounds
-- 🌍 **Multi-language Support** - Available in English, German, Russian, and Ukrainian
-- 📊 **Interactive Skills Visualization** - Unique rotating radar chart for skills
-- 💫 **Smooth Animations** - Scroll animations and interactive elements
-- 🔥 **Firebase Backend** - Translations stored in Firestore database
+- 🌓 **Dark/Light Mode** - Theme toggle powered by `next-themes`
+- 🌍 **Multi-language Support** - English, German, Russian, and Ukrainian, persisted in `localStorage`
+- 🌦️ **Live Weather Widget** - Real-time weather with city autocomplete search
+- 📨 **Working Contact Form** - Email delivery via the [Resend](https://resend.com) API through a serverless route, with copy-to-clipboard email
+- 💫 **Smooth Animations** - Scroll reveal, scroll progress bar, custom cursor, and marquee effects
+- 🧩 **Component-driven** - Hero, About, Work, Timeline, Skills, and Contact sections
+- ✅ **Tested & Typed** - Jest + Testing Library, fully TypeScript
 
 ## 🛠️ Technology Stack
 
-- 🖥️ **Frontend:** HTML5, CSS3, JavaScript (ES6+)
-- 🎨 **Styling:** Bootstrap 5
-- ⚙️ **Backend:** Node.js, Express.js
-- 🗄️ **Database:** Firebase Firestore
-- 🚀 **Deployment:** Netlify
+- 🖥️ **Framework:** Next.js 16 (App Router), React 19
+- 🔤 **Language:** TypeScript
+- 🎨 **Styling:** Tailwind CSS 4, CSS custom properties
+- 🌓 **Theming:** next-themes
+- 📧 **Email:** Resend (serverless API route)
+- 🧪 **Testing:** Jest, React Testing Library
+- 🚀 **Deployment:** Vercel
 
 ## 📁 Project Structure
 
 ```text
-my-cv-website/
-├── 🖼️  assets/             Icons, images, and video backgrounds
-│   ├── 🎬  light.mp4        Light-mode background video
-│   ├── 🌑  dark.mp4         Dark-mode background video
-│   ├── 👤  avatar.png       Profile picture
-│   └── 🔣  icons/           SVG icons for UI elements
-├── 🎨  css/
-│   └── style.css           Main stylesheet
-├── 📜  js/
-│   └── main.js             Main JavaScript (translations & animations)
-├── 🖧  server/
-│   └── server.js           Express server + Firebase integration
-├── 📄  index.html           Main HTML structure
-└── 🔒  .env                 Environment variables (not in repo)
+cv-website-next/
+├── 📂  app/                  Next.js App Router
+│   ├── 🌐  api/contact/      Serverless contact form route (Resend)
+│   ├── 🧱  layout.tsx        Root layout + providers
+│   ├── 📄  page.tsx          Home page assembling all sections
+│   └── 🎨  globals.css       Global styles & CSS variables
+├── 🧩  components/           Hero, About, Work, Timeline, Skills,
+│                             Contact, LiveWeather, Nav, Footer, …
+├── 🔁  context/              LangContext (i18n provider)
+├── 🪝  hooks/                useLang, useReveal
+├── 📚  lib/                  translations.ts, skills.ts
+├── 🖼️   public/               Static assets (images, favicon)
+├── 🧪  __tests__/            Jest test suites
+└── ⚙️   vercel.json           Deployment config
 ```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- 📦 Node.js (v14 or higher)
-- 🔥 Firebase account with Firestore database
-- 🔐 Environment variables configured
+- 📦 Node.js (v18 or higher)
+- 🔐 A [Resend](https://resend.com) API key (for the contact form)
 
 ### Installation
 
-<div align="center">
-  
 ```bash
 # 1️⃣ Clone the repository
-git clone https://github.com/yourusername/cv-website.git
-cd cv-website
+git clone https://github.com/1curafu/cv-website.git
+cd cv-website/cv-website-next
 
 # 2️⃣ Install dependencies
 npm install
-cd server && npm install
 
 # 3️⃣ Set up environment variables
-# In the server directory
-cp .env.example .env
-# Edit .env with your Firebase credentials
+cp .env.example .env.local
+# Edit .env.local with your Resend credentials
 
 # 4️⃣ Start the development server
-npm start
+npm run dev
 
 # 5️⃣ Open http://localhost:3000 in your browser
 ```
 
-🔧 Environment Configuration
-Create a .env file in the server directory with the following structure:
+### 🔧 Environment Configuration
+
+Create a `.env.local` file in the `cv-website-next` directory:
 
 ```env
-FIREBASE_API_KEY=your_api_key
-FIREBASE_AUTH_DOMAIN=your_auth_domain
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_STORAGE_BUCKET=your_storage_bucket
-FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-FIREBASE_APP_ID=your_app_id
-``` 
+RESEND_API_KEY=your_resend_api_key
+MAIL_TO=your_destination_inbox@example.com
+MAIL_FROM=onboarding@resend.dev   # or an address on your verified domain
+```
 
-</div>
+### 📜 Scripts
+
+```bash
+npm run dev     # Start the development server
+npm run build   # Production build
+npm run start   # Run the production build
+npm run lint    # Lint with ESLint
+npm test        # Run the test suite
+```
 
 ## 📚 What I Learned
 
 <div align="center">
 <table>
 <tr>
-<td align="center">🌓</td>
-<td>Implementing dark/light mode with smooth transitions</td>
+<td align="center">⚛️</td>
+<td>Migrating a vanilla HTML/Bootstrap site to Next.js App Router & React 19</td>
 </tr>
 <tr>
-<td align="center">📱</td>
-<td>Creating responsive layouts with Bootstrap and custom CSS</td>
+<td align="center">🔤</td>
+<td>Building a fully typed codebase with TypeScript</td>
+</tr>
+<tr>
+<td align="center">🌓</td>
+<td>Implementing dark/light theming with next-themes and CSS variables</td>
 </tr>
 <tr>
 <td align="center">🌍</td>
-<td>Managing translations and internationalization</td>
+<td>Managing internationalization with React context and localStorage</td>
 </tr>
 <tr>
-<td align="center">📊</td>
-<td>Building interactive SVG visualizations</td>
+<td align="center">📨</td>
+<td>Sending email reliably from a serverless route with Resend</td>
 </tr>
 <tr>
-<td align="center">⚙️</td>
-<td>Setting up a Node.js/Express backend with Firebase</td>
+<td align="center">🌦️</td>
+<td>Integrating a live weather API with city autocomplete</td>
 </tr>
 <tr>
-<td align="center">👁️</td>
-<td>Using the Intersection Observer API for scroll animations</td>
+<td align="center">💫</td>
+<td>Creating scroll-reveal and progress animations with custom hooks</td>
 </tr>
 <tr>
-<td align="center">🎬</td>
-<td>Implementing video backgrounds with fallbacks</td>
-</tr>
-<tr>
-<td align="center">💾</td>
-<td>Managing state with localStorage and sessionStorage</td>
+<td align="center">🧪</td>
+<td>Writing component tests with Jest and React Testing Library</td>
 </tr>
 </table>
 </div>
@@ -144,7 +147,6 @@ FIREBASE_APP_ID=your_app_id
 <div align="center">
 
 🌐 Add more languages  
-📨 Implement contact form functionality - Done
 📥 Add PDF download option for CV  
 ♿ Improve accessibility features  
 🖼️ Add more project showcase features
@@ -154,7 +156,7 @@ FIREBASE_APP_ID=your_app_id
 ## 📬 Contact Me
 
 <div align="center">
-  
+
 [![Email](https://img.shields.io/badge/Email-icurafu333%40icloud.com-blue?style=for-the-badge&logo=mail.ru&logoColor=white)](mailto:icurafu333@icloud.com)
 [![GitHub](https://img.shields.io/badge/GitHub-1curafu-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/1curafu)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Mykhailo_Khimich-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mykhailo-khimich-a73a13265/)
@@ -164,8 +166,7 @@ FIREBASE_APP_ID=your_app_id
 ## 📄 License
 
 <div align="center">
-  
+
 This project is licensed under the GNU License - see the LICENSE file for details.
 
 </div>
-

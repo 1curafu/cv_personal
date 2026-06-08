@@ -2,14 +2,23 @@
 
 import { useLang } from '@/hooks/useLang'
 import { useReveal } from '@/hooks/useReveal'
+import type { TranslationKey } from '@/lib/translations'
 import WorkRow from './WorkRow'
 
-const PROJECTS = [
-  { index: '01', nameKey: 'projectFirstName',  descKey: 'projectFirstDescription',  tags: ['Python', 'Django', 'APIs'],        href: 'https://github.com/1curafu/currency' },
-  { index: '02', nameKey: 'projectSecondName', descKey: 'projectSecondDescription', tags: ['HTML', 'CSS', 'JavaScript'],       href: 'https://github.com/1curafu/Musik-Webstore' },
-  { index: '03', nameKey: 'projectThirdName',  descKey: 'projectThirdDescription',  tags: ['JavaScript', 'APIs'],              href: 'https://github.com/1curafu/SkyLi-Weathercast' },
-  { index: '04', nameKey: 'projectFourthName', descKey: 'projectFourthDescription', tags: ['Fullstack', 'Teamwork'],           href: 'https://github.com/1curafu/Task-Manager' },
-] as const
+type Project = {
+  index: string
+  nameKey: TranslationKey
+  descKey: TranslationKey
+  tags: string[]
+  repoHref: string
+  liveHref?: string
+}
+
+const PROJECTS: Project[] = [
+  { index: '01', nameKey: 'projectFirstName',  descKey: 'projectFirstDescription',  tags: ['React', 'TypeScript', 'Supabase'],   repoHref: 'https://github.com/bwz-imst24a-projects/trails-management-app-mykhailo', liveHref: 'https://trails-management-app.vercel.app' },
+  { index: '02', nameKey: 'projectSecondName', descKey: 'projectSecondDescription', tags: ['JavaScript', 'Node', 'APIs'],         repoHref: 'https://github.com/1curafu/SkyLi-Weathercast', liveHref: 'https://skyli-weathercast.onrender.com/' },
+  { index: '03', nameKey: 'projectThirdName',  descKey: 'projectThirdDescription',  tags: ['Next.js', 'TypeScript', 'Supabase'],  repoHref: 'https://github.com/1curafu/Task-Manager',      liveHref: 'https://www.vela.works/' },
+]
 
 export default function Work() {
   const { t } = useLang()
@@ -31,8 +40,9 @@ export default function Work() {
             index={p.index}
             name={t(p.nameKey)}
             description={t(p.descKey)}
-            tags={[...p.tags]}
-            href={p.href}
+            tags={p.tags}
+            repoHref={p.repoHref}
+            liveHref={p.liveHref}
           />
         ))}
       </ul>

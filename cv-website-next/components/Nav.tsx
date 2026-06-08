@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTheme } from 'next-themes'
 import { useLang } from '@/hooks/useLang'
-import PaletteToggle from './PaletteToggle'
 import type { Lang } from '@/lib/translations'
 
 const LANGS: { code: Lang; label: string }[] = [
@@ -102,8 +101,6 @@ export default function Nav() {
               </ul>
             )}
           </div>
-
-          <PaletteToggle />
 
           {mounted && (
             <button

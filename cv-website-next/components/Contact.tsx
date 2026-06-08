@@ -12,6 +12,19 @@ export default function Contact() {
 
   const [status,  setStatus]  = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const [message, setMessage] = useState('')
+  const [copied,  setCopied]  = useState(false)
+
+  const EMAIL = 'mykhailo.khimich@icloud.com'
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(EMAIL)
+    } catch {
+      return
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   async function handleSubmit(e: { preventDefault(): void; currentTarget: EventTarget | null }) {
     e.preventDefault()
@@ -53,7 +66,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-[clamp(60px,9vw,130px)]">
       <div ref={headRef} className="reveal flex items-baseline gap-[18px] mb-12">
-        <span className="font-display font-bold text-[15px] text-accent tracking-[.1em]">05</span>
+        <span className="font-display font-bold text-[15px] text-accent tracking-[.1em]">06</span>
         <h2 className="font-display font-bold text-[clamp(34px,6vw,64px)] tracking-tight">
           {t('contactHeading')}
         </h2>
@@ -64,11 +77,33 @@ export default function Contact() {
           <p className="font-display font-medium text-[clamp(20px,2.6vw,28px)] leading-[1.25] mb-[26px]">
             {t('contactLead')}
           </p>
-          <a href="mailto:mykhailo.khimich@icloud.com"
-             className="inline-block font-display font-semibold text-[clamp(16px,2vw,20px)]
-                        text-accent border-b-2 border-transparent hover:border-accent transition-colors">
-            mykhailo.khimich@icloud.com
-          </a>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5">
+            <a href={`mailto:${EMAIL}`}
+               className="font-display font-semibold text-[clamp(16px,2vw,20px)]
+                          text-accent border-b-2 border-transparent hover:border-accent transition-colors">
+              {EMAIL}
+            </a>
+            <button
+              type="button"
+              onClick={copyEmail}
+              aria-label={t('contactCopy')}
+              className="inline-flex items-center gap-1.5 font-display font-semibold text-[13px]
+                         px-3 py-1.5 rounded-full border border-line text-ink-2
+                         hover:border-accent hover:text-accent transition-colors duration-200"
+            >
+              {copied ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  {t('contactCopied')}
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                  {t('contactCopy')}
+                </>
+              )}
+            </button>
+          </div>
           <div className="flex gap-[18px] mt-[22px]">
             <a href="https://github.com/1curafu" target="_blank" rel="noopener noreferrer"
                className="font-bold text-ink-2 hover:text-accent transition-colors">
