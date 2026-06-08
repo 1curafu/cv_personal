@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+/* ── Dark mode: activate when .dark class is on <html> (set by next-themes) ── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Raw CSS color tokens — periwinkle, 2 modes ── */
+/* These cascade normally; @theme inline below maps them to Tailwind utilities. */
+:root {
+  /* Periwinkle — light */
+  --accent:    #405173;
+  --on-accent: #FFFFFF;
+  --bg:        #F1F4FC;
+  --bg-soft:   #FFFFFF;
+  --ink:       #1B2236;
+  --ink-2:     #4A5573;
+  --line:      #DCE3F3;
+  --card:      #FFFFFF;
+
+  /* Console panel — always dark, never changes with mode */
+  --c-bg:   #0B0A12;
+  --c-line: rgba(255,255,255,.10);
+  --c-dim:  rgba(255,255,255,.45);
+  --c-fg:   #ECEAF6;
+}
+
+html.dark {
+  /* Periwinkle — dark */
+  --accent:    #D9E5FF;
+  --on-accent: #1B2236;
+  --bg:        #0B0E17;
+  --bg-soft:   #121726;
+  --ink:       #EEF2FC;
+  --ink-2:     #9AA6C4;
+  --line:      #232B40;
+  --card:      #121726;
+}
+
+/* ── Map raw vars to Tailwind v4 utilities via @theme inline ── */
+/* inline = no duplicate CSS variables emitted; just creates the utility classes */
+@theme inline {
+  --color-accent:    var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-bg:        var(--bg);
+  --color-bg-soft:   var(--bg-soft);
+  --color-ink:       var(--ink);
+  --color-ink-2:     var(--ink-2);
+  --color-line:      var(--line);
+  --color-card:      var(--card);
+
+  /* Font families (populated by next/font CSS variables from layout.tsx) */
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body:    var(--font-plus-jakarta),  system-ui, sans-serif;
+  --font-mono:    var(--font-jetbrains),     ui-monospace, monospace;
+
+  /* Max width / radius tokens */
+  --width-site:   1180px;
+  --radius-site:  22px;
+
+  /* ── Animations ── */
+  --animate-float-1:    float 30s ease-in-out infinite;
+  --animate-float-2:    float 30s ease-in-out infinite -8s;
+  --animate-float-3:    float 30s ease-in-out infinite -14s;
+  --animate-marquee:    marqueeScroll 28s linear infinite;
+  --animate-bob-1:      bob 5s ease-in-out infinite;
+  --animate-bob-2:      bob 5s ease-in-out infinite -1.5s;
+  --animate-bob-3:      bob 5s ease-in-out infinite -3s;
+  --animate-spin-slow:  spinSlow 28s linear infinite;
+  --animate-scan:       scanY 7s linear infinite;
+  --animate-blink:      blink 1.1s step-end infinite;
+  --animate-glow-pulse: glowPulse 2.4s ease-in-out infinite;
+
+  @keyframes float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(8vmax,4vmax) scale(1.12); }
+    66%      { transform: translate(-6vmax,8vmax) scale(.92); }
+  }
+  @keyframes marqueeScroll {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes bob {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-9px); }
+  }
+  @keyframes spinSlow {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes scanY {
+    0%   { transform: translateY(-20%); opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: translateY(560%); opacity: 0; }
+  }
+  @keyframes blink {
+    0%,49%   { opacity: 1; }
+    50%,100% { opacity: 0; }
+  }
+  @keyframes glowPulse {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+    70%  { box-shadow: 0 0 0 9px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+}
+
+/* ── Base ── */
+/* Layered into `base` so Tailwind utilities (e.g. text-on-accent) win the cascade.
+   Unlayered, `a { color: inherit }` would override utility text colors — which made
+   the hero "See my work" button inherit --ink instead of --on-accent. */
+@layer base {
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    font-family: var(--font-body, system-ui, sans-serif);
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background .5s ease, color .5s ease;
+  }
+
+  ::selection { background: var(--accent); color: var(--on-accent); }
+  h1, h2, h3 { font-family: var(--font-display, system-ui, sans-serif); }
+  a { color: inherit; text-decoration: none; }
+}
+
+/* ── Reveal animation ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+/* ── Floating label inputs ── */
+.field { position: relative; }
+.field input, .field textarea {
+  width: 100%;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 16px 8px;
+  transition: border-color .25s, box-shadow .25s;
+  resize: vertical;
+  font-family: inherit;
+}
+.field textarea { min-height: 120px; }
+.field label {
+  position: absolute;
+  left: 16px;
+  top: 15px;
+  font-size: 15px;
+  color: var(--ink-2);
+  pointer-events: none;
+  transition: .2s cubic-bezier(.2,.7,.2,1);
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.field input:focus + label,
+.field textarea:focus + label,
+.field input:not(:placeholder-shown) + label,
+.field textarea:not(:placeholder-shown) + label {
+  top: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+/* ── Custom utilities ── */
+@layer utilities {
+  .accent-bg-10  { background-color: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .accent-bg-12  { background-color: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .accent-bg-14  { background-color: color-mix(in srgb, var(--accent) 14%, transparent); }
+  .accent-shadow { box-shadow: 0 12px 30px -12px var(--accent); }
+  .accent-shadow-lg { box-shadow: 0 18px 38px -12px var(--accent); }
+  .accent-ring   { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); }
+  .accent-glow   { box-shadow: 0 0 22px -6px var(--accent); }
+  .accent-glow-lg { box-shadow: 0 0 26px -10px var(--accent); }
+  .text-on-accent { color: var(--on-accent); }
+  .bg-c-bg    { background-color: var(--c-bg); }
+  .text-c-fg  { color: var(--c-fg); }
+  .text-c-dim { color: var(--c-dim); }
+  .border-c-line { border-color: var(--c-line); }
+}

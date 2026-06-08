@@ -29,6 +29,12 @@ my-cv/
 .netlify/
 netlify.toml
 
+# Claude Code
+.claude/
+
+# Local docs / scratch
+docs/
+
 # System files
 .DS_Store
 Thumbs.db
