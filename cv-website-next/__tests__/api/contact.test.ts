@@ -57,7 +57,7 @@ describe('POST /api/contact', () => {
     )
   })
 
-  it('returns 500 when the email service is not configured', async () => {
+  it('returns 500 when RESEND_API_KEY is not configured', async () => {
     const saved = process.env.RESEND_API_KEY
     delete process.env.RESEND_API_KEY
     const res = await POST(makeRequest({
@@ -67,5 +67,80 @@ describe('POST /api/contact', () => {
     expect(res.status).toBe(500)
     expect(sendMock).not.toHaveBeenCalled()
     process.env.RESEND_API_KEY = saved
+  })
+
+  it('returns 500 when MAIL_TO is not configured', async () => {
+    const saved = process.env.MAIL_TO
+    delete process.env.MAIL_TO
+    const res = await POST(makeRequest({
+      name: 'Alice', email: 'alice@example.com',
+      subject: 'Hello', message: 'Test message',
+    }) as never)
+    expect(res.status).toBe(500)
+    expect(sendMock).not.toHaveBeenCalled()
+    process.env.MAIL_TO = saved
+  })
+
+  it('returns 400 when the request body is not valid JSON', async () => {
+    const res = await POST({ json: async () => { throw new Error('bad json') } } as never)
+    expect(res.status).toBe(400)
+    expect(sendMock).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 when name or subject contains CR/LF (header injection)', async () => {
+    const injected = await POST(makeRequest({
+      name: 'Alice\r\nBcc: victim@example.com', email: 'alice@example.com',
+      subject: 'Hello', message: 'Test message',
+    }) as never)
+    expect(injected.status).toBe(400)
+
+    const injectedSubject = await POST(makeRequest({
+      name: 'Alice', email: 'alice@example.com',
+      subject: 'Hi\nX-Header: evil', message: 'Test message',
+    }) as never)
+    expect(injectedSubject.status).toBe(400)
+    expect(sendMock).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 when the message exceeds the maximum length', async () => {
+    const res = await POST(makeRequest({
+      name: 'Alice', email: 'alice@example.com',
+      subject: 'Hello', message: 'x'.repeat(5001),
+    }) as never)
+    expect(res.status).toBe(400)
+    expect(sendMock).not.toHaveBeenCalled()
+  })
+
+  it('truncates an over-long name in the From header and keeps it CR/LF-free', async () => {
+    const res = await POST(makeRequest({
+      name: 'A'.repeat(500), email: 'alice@example.com',
+      subject: 'Hello', message: 'Test message',
+    }) as never)
+    expect(res.status).toBe(200)
+    const [args] = sendMock.mock.calls
+    const from = (args[0] as { from: string }).from
+    expect(from).not.toMatch(/[\r\n]/)
+    // 200-char cap from sanitizeHeader, plus the " <addr>" suffix.
+    expect((args[0] as { from: string }).from.length).toBeLessThanOrEqual(200 + ' <onboarding@resend.dev>'.length)
+  })
+
+  it('returns 500 when Resend responds with an error object', async () => {
+    sendMock.mockResolvedValueOnce({ data: null, error: { message: 'rejected' } })
+    const res = await POST(makeRequest({
+      name: 'Alice', email: 'alice@example.com',
+      subject: 'Hello', message: 'Test message',
+    }) as never)
+    expect(res.status).toBe(500)
+    const data = await res.json()
+    expect(data.ok).toBeUndefined()
+  })
+
+  it('returns 500 when the Resend call throws', async () => {
+    sendMock.mockRejectedValueOnce(new Error('network down'))
+    const res = await POST(makeRequest({
+      name: 'Alice', email: 'alice@example.com',
+      subject: 'Hello', message: 'Test message',
+    }) as never)
+    expect(res.status).toBe(500)
   })
 })

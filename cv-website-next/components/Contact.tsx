@@ -49,17 +49,17 @@ export default function Contact() {
       })
       if (res.ok) {
         setStatus('ok')
-        setMessage('✓ Thanks! Your message is on its way.')
+        setMessage(t('contactStatusSuccess'))
         form.reset()
         setTimeout(() => { setStatus('idle'); setMessage('') }, 5000)
       } else {
         const data = await res.json()
         setStatus('err')
-        setMessage(data.error ?? 'Something went wrong. Please try again.')
+        setMessage(data.error ?? t('contactStatusError'))
       }
     } catch {
       setStatus('err')
-      setMessage('Network error. Please try again.')
+      setMessage(t('contactStatusNetwork'))
     }
   }
 

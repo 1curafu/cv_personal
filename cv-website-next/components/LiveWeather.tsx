@@ -161,6 +161,13 @@ export default function LiveWeather() {
     return () => document.removeEventListener('click', handler)
   }, [])
 
+  // Cancel any pending debounced lookup when the widget unmounts.
+  useEffect(() => {
+    return () => {
+      if (debounce.current) clearTimeout(debounce.current)
+    }
+  }, [])
+
   function onChange(e: { target: { value: string } }) {
     const value = e.target.value
     setQuery(value)
@@ -244,6 +251,7 @@ export default function LiveWeather() {
               role="combobox"
               aria-expanded={open}
               aria-controls="live-suggestions"
+              aria-activedescendant={activeIndex >= 0 ? `live-opt-${activeIndex}` : undefined}
               aria-autocomplete="list"
               autoComplete="off"
               className="w-full rounded-full border-[1.5px] border-line bg-bg-soft
@@ -260,7 +268,7 @@ export default function LiveWeather() {
                            shadow-[0_18px_40px_-18px_rgba(0,0,0,.45)]"
               >
                 {suggestions.map((p, i) => (
-                  <li key={p.id} role="option" aria-selected={i === activeIndex}>
+                  <li key={p.id} id={`live-opt-${i}`} role="option" aria-selected={i === activeIndex}>
                     <button
                       type="button"
                       onMouseDown={e => e.preventDefault()}

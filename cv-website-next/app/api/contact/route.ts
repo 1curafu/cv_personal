@@ -8,6 +8,9 @@ interface ContactBody {
   message: string
 }
 
+/** Upper bound on the free-text message to keep the mail endpoint from being abused. */
+const MAX_MESSAGE_LENGTH = 5000
+
 /** Strip control characters that enable email header injection, trim, and cap length. */
 function sanitizeHeader(s: string, maxLen = 200): string {
   return s.replace(/[\r\n\t"<>]/g, '').trim().slice(0, maxLen)
@@ -98,7 +101,7 @@ function isValidBody(b: unknown): b is ContactBody {
     typeof name    === 'string' && name.trim().length > 0 && !/[\r\n]/.test(name) &&
     typeof email   === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
     typeof subject === 'string' && subject.trim().length > 0 && !/[\r\n]/.test(subject) &&
-    typeof message === 'string' && message.trim().length > 0
+    typeof message === 'string' && message.trim().length > 0 && message.length <= MAX_MESSAGE_LENGTH
   )
 }
 
