@@ -85,7 +85,7 @@ npm run dev
 
 ### 🔧 Environment Configuration
 
-Create a `.env.local` file in the `cv-website-next` directory:
+Create a `.env` file in the `cv-website-next` directory:
 
 ```env
 RESEND_API_KEY=your_resend_api_key
