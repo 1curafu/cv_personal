@@ -74,8 +74,8 @@ cd cv-website/cv-website-next
 npm install
 
 # 3️⃣ Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your Resend credentials
+cp .env.example .env
+# Edit .env with your Resend credentials
 
 # 4️⃣ Start the development server
 npm run dev
