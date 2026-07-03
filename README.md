@@ -1,172 +1,134 @@
-# ✨ Interactive CV Website ✨
+# Personal CV & Portfolio Website
 
-A responsive, modern CV / portfolio site built with Next.js, featuring dark/light mode, multi-language support, a live weather widget, and a working contact form.
+A responsive, multilingual portfolio and CV site built with Next.js 16 and React 19. It presents my background, selected projects, and skills, and includes two working, interactive features: a live weather widget and a serverless-backed contact form.
+
+The application lives in the [`cv-website-next/`](./cv-website-next) directory.
 
 <div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
 
 </div>
 
-## 🌟 Live Website
+**Live site:** https://cv-personal-hazel.vercel.app/
 
-[View Website ](https://cv-personal-hazel.vercel.app/)
+## Overview
 
-## ✨ Features
+The site is a single-page application composed of distinct sections — hero, about, selected work, timeline, skills, and contact — assembled in the App Router. Content is fully internationalized across four languages, the theme adapts to light and dark mode, and interactive elements demonstrate real integrations rather than static mockups. The codebase is fully typed and covered by a Jest test suite.
 
-- 📱 **Responsive Design** - Looks great on all devices
-- 🌓 **Dark/Light Mode** - Theme toggle powered by `next-themes`
-- 🌍 **Multi-language Support** - English, German, Russian, and Ukrainian, persisted in `localStorage`
-- 🌦️ **Live Weather Widget** - Real-time weather with city autocomplete search
-- 📨 **Working Contact Form** - Email delivery via the [Resend](https://resend.com) API through a serverless route, with copy-to-clipboard email
-- 💫 **Smooth Animations** - Scroll reveal, scroll progress bar, custom cursor, and marquee effects
-- 🧩 **Component-driven** - Hero, About, Work, Timeline, Skills, and Contact sections
-- ✅ **Tested & Typed** - Jest + Testing Library, fully TypeScript
+## Features
 
-## 🛠️ Technology Stack
+- **Responsive layout** — adapts cleanly from mobile to desktop.
+- **Light and dark theme** — driven by `next-themes` and CSS custom properties, with the user's choice persisted.
+- **Four-language support** — English, German, Russian, and Ukrainian, provided through a React context and persisted in `localStorage`.
+- **Live weather widget** — city search with real-time conditions fetched from the Open-Meteo API directly in the browser (no API key required).
+- **Working contact form** — messages are delivered by email through the [Resend](https://resend.com) API via a serverless route, with a copy-to-clipboard fallback.
+- **Motion and interaction** — scroll-reveal animations, a scroll progress indicator, a custom cursor, and a marquee, implemented with lightweight custom hooks.
+- **Typed and tested** — written entirely in TypeScript, with component tests using Jest and React Testing Library.
 
-- 🖥️ **Framework:** Next.js 16 (App Router), React 19
-- 🔤 **Language:** TypeScript
-- 🎨 **Styling:** Tailwind CSS 4, CSS custom properties
-- 🌓 **Theming:** next-themes
-- 📧 **Email:** Resend (serverless API route)
-- 🧪 **Testing:** Jest, React Testing Library
-- 🚀 **Deployment:** Vercel
+## Tech Stack
 
-## 📁 Project Structure
+| Area        | Technology                                    |
+| ----------- | --------------------------------------------- |
+| Framework   | Next.js 16 (App Router), React 19             |
+| Language    | TypeScript 5                                  |
+| Styling     | Tailwind CSS 4, CSS custom properties         |
+| Theming     | next-themes                                   |
+| Email       | Resend (serverless API route)                 |
+| Testing     | Jest, React Testing Library                   |
+| Deployment  | Vercel                                        |
+
+## Project Structure
 
 ```text
-cv-website-next/
-├── 📂  app/                  Next.js App Router
-│   ├── 🌐  api/contact/      Serverless contact form route (Resend)
-│   ├── 🧱  layout.tsx        Root layout + providers
-│   ├── 📄  page.tsx          Home page assembling all sections
-│   └── 🎨  globals.css       Global styles & CSS variables
-├── 🧩  components/           Hero, About, Work, Timeline, Skills,
-│                             Contact, LiveWeather, Nav, Footer, …
-├── 🔁  context/              LangContext (i18n provider)
-├── 🪝  hooks/                useLang, useReveal
-├── 📚  lib/                  translations.ts, skills.ts
-├── 🖼️   public/               Static assets (images, favicon)
-├── 🧪  __tests__/            Jest test suites
-└── ⚙️   vercel.json           Deployment config
+cv_personal/
+└── cv-website-next/          Next.js application
+    ├── app/                  App Router
+    │   ├── api/contact/      Serverless contact-form route (Resend)
+    │   ├── layout.tsx        Root layout and providers
+    │   ├── page.tsx          Home page assembling all sections
+    │   └── globals.css       Global styles and CSS variables
+    ├── components/           Hero, About, Work, Timeline, Skills, Contact,
+    │                         LiveWeather, Nav, Footer, and supporting UI
+    ├── context/              Language provider (i18n)
+    ├── hooks/                useLang, useReveal
+    ├── lib/                  translations.ts, skills.ts
+    ├── public/               Static assets
+    ├── __tests__/            Jest test suites
+    └── vercel.json           Deployment configuration
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- 📦 Node.js (v18 or higher)
-- 🔐 A [Resend](https://resend.com) API key (for the contact form)
+- Node.js 20.9 or higher
+- A [Resend](https://resend.com) API key, required for the contact form
 
 ### Installation
 
 ```bash
-# 1️⃣ Clone the repository
-git clone https://github.com/1curafu/cv-website.git
-cd cv-website/cv-website-next
+# Clone the repository
+git clone https://github.com/1curafu/cv_personal.git
+cd cv_personal/cv-website-next
 
-# 2️⃣ Install dependencies
+# Install dependencies
 npm install
 
-# 3️⃣ Set up environment variables
+# Configure environment variables
 cp .env.example .env
 # Edit .env with your Resend credentials
 
-# 4️⃣ Start the development server
+# Start the development server
 npm run dev
-
-# 5️⃣ Open http://localhost:3000 in your browser
 ```
 
-### 🔧 Environment Configuration
+Open http://localhost:3000 to view the site.
+
+### Environment Variables
 
 Create a `.env` file in the `cv-website-next` directory:
 
 ```env
+# Resend API key — https://resend.com/api-keys
 RESEND_API_KEY=your_resend_api_key
-MAIL_TO=your_destination_inbox@example.com
-MAIL_FROM=onboarding@resend.dev   # or an address on your verified domain
+
+# Address that receives contact-form submissions.
+# In Resend test mode this must be the account owner's email.
+MAIL_TO=your_inbox@example.com
+
+# Sender address. Use the Resend test sender until you verify your own domain.
+MAIL_FROM=onboarding@resend.dev
 ```
 
-### 📜 Scripts
+The same keys must be configured in the Vercel project settings for the deployed site.
 
-```bash
-npm run dev     # Start the development server
-npm run build   # Production build
-npm run start   # Run the production build
-npm run lint    # Lint with ESLint
-npm test        # Run the test suite
-```
+### Available Scripts
 
-## 📚 What I Learned
+Run from the `cv-website-next` directory:
 
-<div align="center">
-<table>
-<tr>
-<td align="center">⚛️</td>
-<td>Migrating a vanilla HTML/Bootstrap site to Next.js App Router & React 19</td>
-</tr>
-<tr>
-<td align="center">🔤</td>
-<td>Building a fully typed codebase with TypeScript</td>
-</tr>
-<tr>
-<td align="center">🌓</td>
-<td>Implementing dark/light theming with next-themes and CSS variables</td>
-</tr>
-<tr>
-<td align="center">🌍</td>
-<td>Managing internationalization with React context and localStorage</td>
-</tr>
-<tr>
-<td align="center">📨</td>
-<td>Sending email reliably from a serverless route with Resend</td>
-</tr>
-<tr>
-<td align="center">🌦️</td>
-<td>Integrating a live weather API with city autocomplete</td>
-</tr>
-<tr>
-<td align="center">💫</td>
-<td>Creating scroll-reveal and progress animations with custom hooks</td>
-</tr>
-<tr>
-<td align="center">🧪</td>
-<td>Writing component tests with Jest and React Testing Library</td>
-</tr>
-</table>
-</div>
+| Command         | Description                        |
+| --------------- | ---------------------------------- |
+| `npm run dev`   | Start the development server       |
+| `npm run build` | Create a production build          |
+| `npm run start` | Serve the production build         |
+| `npm run lint`  | Lint the codebase with ESLint      |
+| `npm test`      | Run the Jest test suite            |
 
-## 🔮 Future Improvements
+## Deployment
 
-<div align="center">
+The site is deployed on Vercel. Pushes to the default branch trigger a production deployment; the required environment variables are configured in the Vercel project settings.
 
-🌐 Add more languages  
-📥 Add PDF download option for CV  
-♿ Improve accessibility features  
-🖼️ Add more project showcase features
+## Contact
 
-</div>
+- Email: mykhailo.khimich@icloud.com
+- GitHub: [@1curafu](https://github.com/1curafu)
+- LinkedIn: [Mykhailo Khimich](https://www.linkedin.com/in/mykhailo-khimich-a73a13265/)
 
-## 📬 Contact Me
+## License
 
-<div align="center">
-
-[![Email](https://img.shields.io/badge/Email-icurafu333%40icloud.com-blue?style=for-the-badge&logo=mail.ru&logoColor=white)](mailto:mykhailo.khimich@icloud.com)
-[![GitHub](https://img.shields.io/badge/GitHub-1curafu-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/1curafu)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Mykhailo_Khimich-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mykhailo-khimich-a73a13265/)
-
-</div>
-
-## 📄 License
-
-<div align="center">
-
-This project is licensed under the GNU License - see the LICENSE file for details.
-
-</div>
+This project is licensed under the GNU General Public License. See the [LICENSE](./LICENSE) file for details.
