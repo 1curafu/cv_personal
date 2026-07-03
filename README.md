@@ -125,7 +125,7 @@ The site is deployed on Vercel. Pushes to the default branch trigger a productio
 
 ## Contact
 
-- Email: icurafu333@icloud.com
+- Email: mykhailo.khimich@icloud.com
 - GitHub: [@1curafu](https://github.com/1curafu)
 - LinkedIn: [Mykhailo Khimich](https://www.linkedin.com/in/mykhailo-khimich-a73a13265/)
 

@@ -30,7 +30,9 @@ export default function Timeline() {
     { date: t('timelineFirstDate'),  title: t('timelineFirstName'),  desc: t('timelineFirstDescription'),  open: false },
     { date: t('timelineSecondDate'), title: t('timelineSecondName'), desc: t('timelineSecondDescription'), open: false },
     { date: t('timelineThirdDate'),  title: t('timelineThirdName'),  desc: t('timelineThirdDescription'),  open: false },
-    { date: t('timelineFourthDate'), title: t('timelineFourthName'), desc: t('timelineFourthDescription'), open: true  },
+    { date: t('timelineFourthDate'), title: t('timelineFourthName'), desc: t('timelineFourthDescription'), open: false },
+    { date: t('timelineFifthDate'),  title: t('timelineFifthName'),  desc: t('timelineFifthDescription'),  open: false },
+    { date: t('timelineSixthDate'),  title: t('timelineSixthName'),  desc: t('timelineSixthDescription'),  open: true  },
   ]
 
   return (
